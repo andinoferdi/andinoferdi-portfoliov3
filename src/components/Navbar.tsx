@@ -119,11 +119,7 @@ const Navbar: React.FC = () => {
     if (isOpen) {
       classes += " navbar-open";
     } else if (scrolled) {
-      if (scrollDirection === "down") {
-        classes += " navbar-hidden";
-      } else {
-        classes += " navbar-visible navbar-scrolled";
-      }
+      classes += " navbar-visible navbar-scrolled";
     } else {
       classes += " navbar-transparent";
     }
