@@ -45,8 +45,8 @@ const ContactPage: React.FC = () => {
   }
 
   return (
-    <div className="px-[5%] sm:px-[5%] lg:px-[10%] pb-16" id="Contact">
-      <div className="text-center lg:mt-[5%] mt-10 mb-2 sm:px-0 px-[5%]">
+    <div className="px-[5%] sm:px-[5%] lg:px-[10%] pb-16 bg-background/70" id="Contact">
+      <div className="text-center mb-2 sm:px-0 px-[5%]">
         <h2 className="inline-block text-3xl md:text-5xl font-bold text-center mx-auto gradient-text">Hubungi Saya</h2>
         <p className="text-muted-foreground max-w-2xl mx-auto text-sm md:text-base mt-2">
           Punya pertanyaan? Kirimi saya pesan, dan saya akan segera membalasnya.

@@ -263,7 +263,7 @@ const Portfolio: React.FC = () => {
 
   return (
     <div
-      className="md:px-[10%] px-[5%] w-full sm:mt-0 mt-[3rem] bg-background overflow-hidden"
+      className="md:px-[10%] px-[5%] w-full bg-background/70 overflow-hidden"
       id="Portfolio"
     >
       {/* Header */}
