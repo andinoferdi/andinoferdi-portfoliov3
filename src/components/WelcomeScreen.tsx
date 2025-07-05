@@ -1,21 +1,25 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Code2, Github, Globe, User, Zap, Cpu, Database } from "lucide-react"
+import type React from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { Code2, Github, Globe, User, Zap, Cpu, Database } from "lucide-react";
 
 interface WelcomeScreenProps {
-  onLoadingComplete?: () => void
+  onLoadingComplete?: () => void;
 }
 
 interface LoadingStepProps {
-  step: string
-  isActive: boolean
-  isCompleted: boolean
+  step: string;
+  isActive: boolean;
+  isCompleted: boolean;
 }
 
-const LoadingStep: React.FC<LoadingStepProps> = ({ step, isActive, isCompleted }) => (
+const LoadingStep: React.FC<LoadingStepProps> = ({
+  step,
+  isActive,
+  isCompleted,
+}) => (
   <motion.div
     className="flex items-center gap-3 text-sm"
     initial={{ opacity: 0, x: -20 }}
@@ -56,23 +60,27 @@ const LoadingStep: React.FC<LoadingStepProps> = ({ step, isActive, isCompleted }
     </div>
     <span
       className={`transition-colors duration-300 ${
-        isCompleted ? "text-primary" : isActive ? "text-foreground" : "text-muted-foreground"
+        isCompleted
+          ? "text-primary"
+          : isActive
+          ? "text-foreground"
+          : "text-muted-foreground"
       }`}
     >
       {step}
     </span>
   </motion.div>
-)
+);
 
 const InteractiveLoadingAnimation: React.FC<{
-  progress: number
-  currentStep: number
+  progress: number;
+  currentStep: number;
 }> = ({ progress, currentStep }) => {
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   const loadingSteps = [
     "Initializing components...",
@@ -80,10 +88,12 @@ const InteractiveLoadingAnimation: React.FC<{
     "Connecting to services...",
     "Optimizing performance...",
     "Finalizing setup...",
-  ]
+  ];
 
   // Prevent hydration mismatch by not rendering floating icons until mounted
-  const floatingIcons = mounted ? [Github, Globe, User, Zap, Cpu, Database] : []
+  const floatingIcons = mounted
+    ? [Github, Globe, User, Zap, Cpu, Database]
+    : [];
 
   return (
     <div className="flex flex-col items-center space-y-8">
@@ -185,14 +195,21 @@ const InteractiveLoadingAnimation: React.FC<{
 
         <div className="flex justify-between text-sm">
           <span className="text-muted-foreground">Loading...</span>
-          <span className="text-primary font-medium">{Math.round(progress)}%</span>
+          <span className="text-primary font-medium">
+            {Math.round(progress)}%
+          </span>
         </div>
       </div>
 
       {/* Loading Steps */}
       <div className="space-y-3 w-full max-w-md">
         {loadingSteps.map((step, index) => (
-          <LoadingStep key={index} step={step} isActive={index === currentStep} isCompleted={index < currentStep} />
+          <LoadingStep
+            key={index}
+            step={step}
+            isActive={index === currentStep}
+            isCompleted={index < currentStep}
+          />
         ))}
       </div>
 
@@ -203,110 +220,126 @@ const InteractiveLoadingAnimation: React.FC<{
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
       >
-        <h2 className="text-2xl md:text-3xl font-bold gradient-text mb-2">EkiZR</h2>
+        <h2 className="text-2xl md:text-3xl font-bold gradient-text mb-2">
+          EkiZR
+        </h2>
         <p className="text-muted-foreground text-sm">Creative Developer</p>
       </motion.div>
     </div>
-  )
-}
+  );
+};
 
 const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onLoadingComplete }) => {
-  const [isLoading, setIsLoading] = useState(true)
-  const [progress, setProgress] = useState(0)
-  const [currentStep, setCurrentStep] = useState(0)
-  const [isPageLoaded, setIsPageLoaded] = useState(false)
+  const [isLoading, setIsLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isPageLoaded, setIsPageLoaded] = useState(false);
+  const [isMinimumTimeElapsed, setIsMinimumTimeElapsed] = useState(false);
 
   useEffect(() => {
     // Prevent flickering by checking document state immediately
     if (typeof window !== "undefined") {
       if (document.readyState === "complete") {
-        setIsPageLoaded(true)
-        setProgress(90)
+        setIsPageLoaded(true);
+        setProgress(90);
       } else if (document.readyState === "interactive") {
-        setProgress(60)
+        setProgress(60);
       }
     }
 
     const handleLoad = () => {
-      setIsPageLoaded(true)
-    }
+      setIsPageLoaded(true);
+    };
 
     const handleDOMContentLoaded = () => {
-      setProgress(60)
-    }
+      setProgress(60);
+    };
 
     if (typeof window !== "undefined") {
-      window.addEventListener("load", handleLoad)
-      document.addEventListener("DOMContentLoaded", handleDOMContentLoaded)
+      window.addEventListener("load", handleLoad);
+      document.addEventListener("DOMContentLoaded", handleDOMContentLoaded);
     }
 
     return () => {
       if (typeof window !== "undefined") {
-        window.removeEventListener("load", handleLoad)
-        document.removeEventListener("DOMContentLoaded", handleDOMContentLoaded)
+        window.removeEventListener("load", handleLoad);
+        document.removeEventListener(
+          "DOMContentLoaded",
+          handleDOMContentLoaded
+        );
       }
-    }
-  }, [])
+    };
+  }, []);
 
   useEffect(() => {
-    let progressTimer: NodeJS.Timeout
-    let stepTimer: NodeJS.Timeout
+    const minTimeTimer = setTimeout(() => {
+      setIsMinimumTimeElapsed(true);
+    }, 2000); // Enforce a minimum 2.5 second loading screen
 
-    if (isPageLoaded) {
+    return () => {
+      clearTimeout(minTimeTimer);
+    };
+  }, []);
+
+  useEffect(() => {
+    let progressTimer: NodeJS.Timeout;
+    let stepTimer: NodeJS.Timeout;
+
+    if (isPageLoaded && isMinimumTimeElapsed) {
       // Page is loaded, complete the loading quickly
       progressTimer = setInterval(() => {
         setProgress((prev) => {
           if (prev >= 100) {
-            clearInterval(progressTimer)
+            clearInterval(progressTimer);
             setTimeout(() => {
-              setIsLoading(false)
+              setIsLoading(false);
               setTimeout(() => {
-                onLoadingComplete?.()
-              }, 300)
-            }, 200)
-            return 100
+                onLoadingComplete?.();
+              }, 500);
+            }, 200);
+            return 100;
           }
-          return Math.min(prev + 10, 100)
-        })
-      }, 30)
+          return Math.min(prev + 10, 100);
+        });
+      }, 30);
 
       stepTimer = setInterval(() => {
         setCurrentStep((prev) => {
           if (prev < 4) {
-            return prev + 1
+            return prev + 1;
           }
-          clearInterval(stepTimer)
-          return prev
-        })
-      }, 100)
+          clearInterval(stepTimer);
+          return prev;
+        });
+      }, 100);
     } else {
       // Simulate realistic loading progress
       progressTimer = setInterval(() => {
         setProgress((prev) => {
-          if (prev < 30) return prev + 3
-          if (prev < 60) return prev + 2
-          if (prev < 90) return prev + 1
-          return prev + 0.5
-        })
-      }, 150)
+          if (prev < 30) return prev + 3;
+          if (prev < 60) return prev + 2;
+          if (prev < 90) return prev + 1;
+          return prev + 0.5;
+        });
+      }, 150);
 
       stepTimer = setInterval(() => {
         setCurrentStep((prev) => {
           if (prev < 4) {
-            return prev + 1
+            return prev + 1;
           }
-          return prev
-        })
-      }, 600)
+          return prev;
+        });
+      }, 600);
     }
 
     return () => {
-      clearInterval(progressTimer)
-      clearInterval(stepTimer)
-    }
-  }, [isPageLoaded, onLoadingComplete])
+      clearInterval(progressTimer);
+      clearInterval(stepTimer);
+    };
+  }, [isPageLoaded, isMinimumTimeElapsed, onLoadingComplete]);
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     exit: {
       opacity: 0,
       scale: 0.98,
@@ -316,7 +349,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onLoadingComplete }) => {
         ease: "easeInOut",
       },
     },
-  }
+  };
 
   return (
     <AnimatePresence>
@@ -335,12 +368,15 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onLoadingComplete }) => {
           </div>
 
           <div className="relative z-10 px-4 w-full max-w-lg">
-            <InteractiveLoadingAnimation progress={progress} currentStep={currentStep} />
+            <InteractiveLoadingAnimation
+              progress={progress}
+              currentStep={currentStep}
+            />
           </div>
         </motion.div>
       )}
     </AnimatePresence>
-  )
-}
+  );
+};
 
-export default WelcomeScreen
+export default WelcomeScreen;

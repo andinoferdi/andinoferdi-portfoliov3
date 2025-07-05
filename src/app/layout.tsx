@@ -5,6 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import AOSProvider from "@/components/AOSProvider";
 import { Toaster } from "sonner";
+import AnimatedBackground from "@/components/Background";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -62,7 +63,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange={true}
         >
-          <AOSProvider>{children}</AOSProvider>
+          <AnimatedBackground />
+          <main className="relative z-10">
+            <AOSProvider>{children}</AOSProvider>
+          </main>
           <Toaster
             theme="dark"
             position="top-right"
