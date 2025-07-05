@@ -22,6 +22,9 @@ const nextConfig = {
       },
     ],
     unoptimized: false,
+    domains: [
+      "pzifcyixpavjgjrwdveb.supabase.co",
+    ],
   },
   typescript: {
     ignoreBuildErrors: false,

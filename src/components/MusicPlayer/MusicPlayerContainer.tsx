@@ -1,8 +1,7 @@
 "use client"
 
-import type React from "react"
-import { useEffect } from "react"
-import { useMusicPlayer } from "@/hooks/useMusicPlayer"
+import React, { useEffect } from "react"
+import { useSupabaseMusicPlayer } from "@/hooks/useSupabaseMusicPlayer"
 import MiniPlayer from "./MiniPlayer"
 import FullPlayer from "./FullPlayer"
 
@@ -11,47 +10,123 @@ interface MusicPlayerContainerProps {
 }
 
 const MusicPlayerContainer: React.FC<MusicPlayerContainerProps> = ({ autoPlay = false }) => {
-  const musicPlayer = useMusicPlayer()
+  const { songs, loading } = useSupabaseMusicPlayer()
+  const audioRef = React.useRef<HTMLAudioElement>(null);
+  const [currentIndex, setCurrentIndex] = React.useState(0)
+  const [isPlaying, setIsPlaying] = React.useState(false)
+  const [isExpanded, setIsExpanded] = React.useState(false)
+  const [currentTime, setCurrentTime] = React.useState(0)
+  const [volume, setVolume] = React.useState(0.7)
 
-  // Auto-play when component mounts
-  useEffect(() => {
-    if (autoPlay) {
-      // Add a small delay to ensure the component is fully mounted
-      const timer = setTimeout(() => {
-        musicPlayer.startAutoPlay()
-      }, 1000)
-
-      return () => clearTimeout(timer)
+  // Sinkronisasi play/pause
+  React.useEffect(() => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.play();
+    } else {
+      audioRef.current.pause();
     }
-  }, [autoPlay, musicPlayer.startAutoPlay])
+  }, [isPlaying, songs, currentIndex])
 
-  // Don't render anything if no current song
-  if (!musicPlayer.currentSong) {
-    return null
-  }
+  // Sinkronisasi volume
+  React.useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
 
+  // Sinkronisasi seek
+  React.useEffect(() => {
+    if (audioRef.current && Math.abs(audioRef.current.currentTime - currentTime) > 1) {
+      audioRef.current.currentTime = currentTime;
+    }
+  }, [currentTime]);
+
+  // Update currentTime dari audio
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime);
+    }
+  };
+
+  if (loading || songs.length === 0) return null;
+  const currentSong = songs.length > 0 ? {
+    ...songs[currentIndex],
+    id: Number(songs[currentIndex].id),
+    audioUrl: songs[currentIndex].audio_url,
+    albumArt: songs[currentIndex].album_art,
+  } : null;
+
+  // Handler mirip useMusicPlayer lama
+  const handleNext = () => setCurrentIndex((prev) => (prev + 1) % songs.length)
+  const handlePrevious = () => setCurrentIndex((prev) => (prev === 0 ? songs.length - 1 : prev - 1))
+  const togglePlay = () => setIsPlaying((prev) => !prev)
+  const seekTo = (time: number) => setCurrentTime(time)
+  const toggleExpanded = () => setIsExpanded((prev) => !prev)
+  const selectSong = (idx: number) => setCurrentIndex(idx)
+
+  // Map playlist agar semua song punya audioUrl & albumArt agar kompatibel
+  const mappedPlaylist = songs.map(song => ({
+    ...song,
+    id: Number(song.id),
+    audioUrl: song.audio_url,
+    albumArt: song.album_art,
+  }))
+
+  if (!currentSong) return null
   return (
     <>
-      {musicPlayer.isExpanded ? (
+      <audio
+        ref={audioRef}
+        src={currentSong.audioUrl}
+        onTimeUpdate={handleTimeUpdate}
+        onEnded={handleNext}
+        preload="auto"
+      />
+      {isExpanded ? (
         <FullPlayer
-          state={musicPlayer}
-          onTogglePlay={musicPlayer.togglePlay}
-          onNext={musicPlayer.handleNext}
-          onPrevious={musicPlayer.handlePrevious}
-          onSeek={musicPlayer.seekTo}
-          onVolumeChange={musicPlayer.setVolume}
-          onCollapse={musicPlayer.toggleExpanded}
-          onToggleShuffle={musicPlayer.toggleShuffle}
-          onToggleRepeat={musicPlayer.toggleRepeat}
-          onSelectSong={musicPlayer.selectSong}
+          state={{
+            currentSong,
+            isPlaying,
+            currentTime,
+            duration: currentSong.duration,
+            volume,
+            isExpanded,
+            playlist: mappedPlaylist,
+            currentIndex,
+            isLoading: loading,
+            isShuffled: false,
+            repeatMode: "none",
+          }}
+          onTogglePlay={togglePlay}
+          onNext={handleNext}
+          onPrevious={handlePrevious}
+          onSeek={seekTo}
+          onVolumeChange={setVolume}
+          onCollapse={toggleExpanded}
+          onToggleShuffle={() => {}}
+          onToggleRepeat={() => {}}
+          onSelectSong={selectSong}
         />
       ) : (
         <MiniPlayer
-          state={musicPlayer}
-          onTogglePlay={musicPlayer.togglePlay}
-          onNext={musicPlayer.handleNext}
-          onPrevious={musicPlayer.handlePrevious}
-          onExpand={musicPlayer.toggleExpanded}
+          state={{
+            currentSong,
+            isPlaying,
+            currentTime,
+            duration: currentSong.duration,
+            volume,
+            isExpanded,
+            playlist: mappedPlaylist,
+            currentIndex,
+            isLoading: loading,
+            isShuffled: false,
+            repeatMode: "none",
+          }}
+          onTogglePlay={togglePlay}
+          onNext={handleNext}
+          onPrevious={handlePrevious}
+          onExpand={toggleExpanded}
         />
       )}
     </>
