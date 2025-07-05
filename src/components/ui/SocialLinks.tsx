@@ -1,17 +1,23 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { Linkedin, Github, Instagram, Youtube, ExternalLink } from "lucide-react"
+import type React from "react";
+import {
+  Linkedin,
+  Github,
+  Instagram,
+  Youtube,
+  ExternalLink,
+} from "lucide-react";
 
 interface SocialLink {
-  name: string
-  displayName: string
-  subText: string
-  icon: React.ComponentType<{ className?: string }>
-  url: string
-  color: string
-  gradient: string
-  isPrimary?: boolean
+  name: string;
+  displayName: string;
+  subText: string;
+  icon: React.ComponentType<{ className?: string }>;
+  url: string;
+  color: string;
+  gradient: string;
+  isPrimary?: boolean;
 }
 
 const socialLinks: SocialLink[] = [
@@ -52,12 +58,12 @@ const socialLinks: SocialLink[] = [
     color: "#ffffff",
     gradient: "from-[#333] to-[#24292e]",
   },
-]
+];
 
 const SocialLinks: React.FC = () => {
-  const linkedIn = socialLinks.find((link) => link.isPrimary)!
-  const otherLinks = socialLinks.filter((link) => !link.isPrimary)
-  const [instagram, youtube, github] = otherLinks
+  const linkedIn = socialLinks.find((link) => link.isPrimary)!;
+  const otherLinks = socialLinks.filter((link) => !link.isPrimary);
+  const [instagram, youtube, github] = otherLinks;
 
   return (
     <div className="w-full bg-gradient-to-br from-card/50 to-card/30 rounded-2xl p-6 py-8 backdrop-blur-xl border border-border">
@@ -84,11 +90,11 @@ const SocialLinks: React.FC = () => {
                 className="absolute inset-0 opacity-20 rounded-md transition-all duration-500 group-hover:scale-110 group-hover:opacity-30"
                 style={{ backgroundColor: linkedIn.color }}
               />
-              <div className="relative p-2 rounded-md">
-                <linkedIn.icon
-                  className="w-6 h-6 transition-all duration-500 group-hover:scale-105"
-                  style={{ color: linkedIn.color }}
-                />
+              <div
+                className="relative p-2 rounded-md"
+                style={{ color: linkedIn.color }}
+              >
+                <linkedIn.icon className="w-6 h-6 transition-all duration-500 group-hover:scale-105" />
               </div>
             </div>
 
@@ -124,11 +130,11 @@ const SocialLinks: React.FC = () => {
                   className="absolute inset-0 opacity-20 rounded-lg transition-all duration-500 group-hover:scale-125 group-hover:opacity-30"
                   style={{ backgroundColor: link.color }}
                 />
-                <div className="relative p-2 rounded-lg">
-                  <link.icon
-                    className="w-5 h-5 transition-all duration-500 group-hover:scale-110"
-                    style={{ color: link.color }}
-                  />
+                <div
+                  className="relative p-2 rounded-lg"
+                  style={{ color: link.color }}
+                >
+                  <link.icon className="w-5 h-5 transition-all duration-500 group-hover:scale-110" />
                 </div>
               </div>
 
@@ -164,11 +170,11 @@ const SocialLinks: React.FC = () => {
                 className="absolute inset-0 opacity-20 rounded-lg transition-all duration-500 group-hover:scale-125 group-hover:opacity-30"
                 style={{ backgroundColor: github.color }}
               />
-              <div className="relative p-2 rounded-lg">
-                <github.icon
-                  className="w-5 h-5 transition-all duration-500 group-hover:scale-110"
-                  style={{ color: github.color }}
-                />
+              <div
+                className="relative p-2 rounded-lg"
+                style={{ color: github.color }}
+              >
+                <github.icon className="w-5 h-5 transition-all duration-500 group-hover:scale-110" />
               </div>
             </div>
 
@@ -186,7 +192,7 @@ const SocialLinks: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SocialLinks
+export default SocialLinks;
