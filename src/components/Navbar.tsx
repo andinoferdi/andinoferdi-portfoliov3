@@ -135,7 +135,7 @@ const Navbar: React.FC = () => {
             <div className="flex-shrink-0">
               <a
                 href="#Home"
-                className="text-xl font-bold gradient-text logo-hover"
+                className="text-xl font-bold gradient-text logo-hover cursor-pointer"
               >
                 Ekizr
               </a>
@@ -158,7 +158,7 @@ const Navbar: React.FC = () => {
             <a
               href="#Home"
               onClick={(e) => scrollToSection(e, "#Home")}
-              className="text-xl font-bold gradient-text logo-hover"
+              className="text-xl font-bold gradient-text logo-hover cursor-pointer"
             >
               Ekizr
             </a>
@@ -171,10 +171,10 @@ const Navbar: React.FC = () => {
                 key={item.label}
                 href={item.href}
                 onClick={(e) => scrollToSection(e, item.href)}
-                className="group relative px-3 py-2 text-sm font-medium nav-link"
+                className="group relative px-3 py-2 text-sm font-medium nav-link cursor-pointer"
               >
                 <span
-                  className={`relative z-10 nav-text ${
+                  className={`relative z-10 nav-text cursor-pointer ${
                     activeSection === item.href.substring(1)
                       ? "nav-text-active"
                       : "nav-text-inactive"
@@ -231,7 +231,7 @@ const Navbar: React.FC = () => {
               key={item.label}
               href={item.href}
               onClick={(e) => scrollToSection(e, item.href)}
-              className={`block px-4 py-3 text-lg font-medium mobile-nav-link ${
+              className={`block px-4 py-3 text-lg font-medium mobile-nav-link cursor-pointer ${
                 activeSection === item.href.substring(1)
                   ? "mobile-nav-link-active"
                   : "mobile-nav-link-inactive"
