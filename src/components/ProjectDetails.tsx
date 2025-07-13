@@ -316,7 +316,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ id }) => {
                   alt={project.title}
                   width={600}
                   height={400}
-                  className="w-full object-cover transform transition-transform duration-700 will-change-transform group-hover:scale-105"
+                  className={`w-full object-cover transform transition-transform duration-700 will-change-transform group-hover:scale-105 ${isImageLoaded ? 'opacity-100' : 'opacity-0'}`}
                   onLoad={() => setIsImageLoaded(true)}
                 />
                 <div className="absolute inset-0 border-2 border-white/0 group-hover:border-white/10 transition-colors duration-300 rounded-2xl" />

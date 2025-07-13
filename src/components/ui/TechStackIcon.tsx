@@ -8,9 +8,16 @@ interface TechStackIconProps {
 
 const TechStackIcon: React.FC<TechStackIconProps> = ({ icon, language }) => {
   return (
-    <div className="group p-6 rounded-2xl bg-card/50 hover:bg-card/70 transition-all duration-300 ease-in-out flex flex-col items-center justify-center gap-3 hover:scale-105 cursor-pointer shadow-lg hover:shadow-xl border border-border hover:border-primary/50">
+    <div
+      className="group p-6 rounded-2xl transition-all duration-300 ease-in-out flex flex-col items-center justify-center gap-3 hover:scale-105 cursor-pointer shadow-lg hover:shadow-xl border border-border hover:border-primary/50"
+      style={{
+        background: "rgba(255, 255, 255, 0.02)",
+        backdropFilter: "none",
+        WebkitBackdropFilter: "none",
+      }}
+    >
       <div className="relative">
-        <div className="absolute -inset-1 bg-gradient-to-r from-primary to-blue-500 rounded-full opacity-0 group-hover:opacity-50 blur transition duration-300"></div>
+        <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-blue-500/20 rounded-full opacity-0 group-hover:opacity-50 blur transition duration-300"></div>
         <Image
           src={icon || "/placeholder.svg"}
           alt={`${language} icon`}

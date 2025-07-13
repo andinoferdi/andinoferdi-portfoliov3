@@ -61,4 +61,4 @@ function getMp3DurationFromUrl(url: string): Promise<number> {
     }
     audio.onerror = () => resolve(0)
   })
-} 
+}

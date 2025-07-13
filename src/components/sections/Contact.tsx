@@ -45,19 +45,28 @@ const ContactPage: React.FC = () => {
   }
 
   return (
-    <div className="px-[5%] sm:px-[5%] lg:px-[10%] pb-16 bg-background/70" id="Contact">
-      <div className="text-center mb-2 sm:px-0 px-[5%]">
+    <div className="px-[5%] sm:px-[5%] lg:px-[10%] pb-16 relative" id="Contact" style={{ background: "transparent" }}>
+      <div className="text-center mb-2 sm:px-0 px-[5%]" style={{ background: "transparent" }}>
         <h2 className="inline-block text-3xl md:text-5xl font-bold text-center mx-auto gradient-text">Hubungi Saya</h2>
         <p className="text-muted-foreground max-w-2xl mx-auto text-sm md:text-base mt-2">
           Punya pertanyaan? Kirimi saya pesan, dan saya akan segera membalasnya.
         </p>
       </div>
 
-      <div className="h-auto py-6 flex items-center justify-center 2xl:pr-[3.1%] lg:pr-[3.8%] md:px-0">
-        <div className="container px-[1%] grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-[45%_55%] 2xl:grid-cols-[35%_65%] gap-12">
-          <div className="bg-card/50 backdrop-blur-xl rounded-3xl shadow-2xl p-5 py-10 sm:p-10 transform transition-all duration-500 hover:shadow-primary/10 border border-border">
-            <div className="flex justify-between items-start mb-8">
-              <div>
+      <div
+        className="h-auto py-6 flex items-center justify-center 2xl:pr-[3.1%] lg:pr-[3.8%] md:px-0"
+        style={{ background: "transparent" }}
+      >
+        <div
+          className="container px-[1%] grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-[45%_55%] 2xl:grid-cols-[35%_65%] gap-12"
+          style={{ background: "transparent" }}
+        >
+          <div
+            className="rounded-3xl shadow-2xl p-5 py-10 sm:p-10 transform transition-all duration-500 hover:shadow-primary/10 border border-border/50"
+            style={{ background: "rgba(255, 255, 255, 0.02)" }}
+          >
+            <div className="flex justify-between items-start mb-8" style={{ background: "transparent" }}>
+              <div style={{ background: "transparent" }}>
                 <h2 className="text-4xl font-bold mb-3 gradient-text">Hubungi</h2>
                 <p className="text-muted-foreground">
                   Ada yang ingin didiskusikan? Kirim saya pesan dan mari kita bicara.
@@ -66,8 +75,8 @@ const ContactPage: React.FC = () => {
               <Share2 className="w-10 h-10 text-primary opacity-50" />
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="relative group">
+            <form onSubmit={handleSubmit} className="space-y-6" style={{ background: "transparent" }}>
+              <div className="relative group" style={{ background: "transparent" }}>
                 <User className="absolute left-4 top-4 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
                 <input
                   type="text"
@@ -76,11 +85,12 @@ const ContactPage: React.FC = () => {
                   value={formData.name}
                   onChange={handleChange}
                   disabled={isSubmitting}
-                  className="w-full p-4 pl-12 bg-muted/50 rounded-xl border border-border placeholder-muted-foreground text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all duration-300 hover:border-primary/30 disabled:opacity-50"
+                  className="w-full p-4 pl-12 rounded-xl border border-border/50 placeholder-muted-foreground text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all duration-300 hover:border-primary/30 disabled:opacity-50"
+                  style={{ background: "rgba(255, 255, 255, 0.02)" }}
                   required
                 />
               </div>
-              <div className="relative group">
+              <div className="relative group" style={{ background: "transparent" }}>
                 <Mail className="absolute left-4 top-4 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
                 <input
                   type="email"
@@ -89,11 +99,12 @@ const ContactPage: React.FC = () => {
                   value={formData.email}
                   onChange={handleChange}
                   disabled={isSubmitting}
-                  className="w-full p-4 pl-12 bg-muted/50 rounded-xl border border-border placeholder-muted-foreground text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all duration-300 hover:border-primary/30 disabled:opacity-50"
+                  className="w-full p-4 pl-12 rounded-xl border border-border/50 placeholder-muted-foreground text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all duration-300 hover:border-primary/30 disabled:opacity-50"
+                  style={{ background: "rgba(255, 255, 255, 0.02)" }}
                   required
                 />
               </div>
-              <div className="relative group">
+              <div className="relative group" style={{ background: "transparent" }}>
                 <MessageSquare className="absolute left-4 top-4 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
                 <textarea
                   name="message"
@@ -101,7 +112,8 @@ const ContactPage: React.FC = () => {
                   value={formData.message}
                   onChange={handleChange}
                   disabled={isSubmitting}
-                  className="w-full resize-none p-4 pl-12 bg-muted/50 rounded-xl border border-border placeholder-muted-foreground text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all duration-300 hover:border-primary/30 h-[9.9rem] disabled:opacity-50"
+                  className="w-full resize-none p-4 pl-12 rounded-xl border border-border/50 placeholder-muted-foreground text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all duration-300 hover:border-primary/30 h-[9.9rem] disabled:opacity-50"
+                  style={{ background: "rgba(255, 255, 255, 0.02)" }}
                   required
                 />
               </div>
@@ -115,26 +127,21 @@ const ContactPage: React.FC = () => {
               </button>
             </form>
 
-            <div className="mt-10 pt-6 border-t border-border flex justify-center space-x-6">
+            <div
+              className="mt-10 pt-6 border-t border-border/50 flex justify-center space-x-6"
+              style={{ background: "transparent" }}
+            >
               <SocialLinks />
             </div>
           </div>
 
-          <div className="bg-card/50 backdrop-blur-xl rounded-3xl p-3 py-3 md:p-10 md:py-8 shadow-2xl transform transition-all duration-500 hover:shadow-primary/10 border border-border">
+          <div
+            className="rounded-3xl p-3 py-3 md:p-10 md:py-8 shadow-2xl transform transition-all duration-500 hover:shadow-primary/10 border border-border/50"
+            style={{ background: "rgba(255, 255, 255, 0.02)" }}
+          >
             <CommentSection />
           </div>
         </div>
-      </div>
-
-      {/* Footer content integrated into Contact section */}
-      <div className="text-center mt-12 pt-8 border-t border-border/30">
-        <span className="text-sm text-muted-foreground">
-          © 2025{" "}
-          <a href="https://eki.my.id/" className="hover:underline text-primary transition-colors">
-            EkiZR™
-          </a>
-          . All Rights Reserved.
-        </span>
       </div>
     </div>
   )

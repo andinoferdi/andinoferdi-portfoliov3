@@ -5,7 +5,6 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import AOSProvider from "@/components/AOSProvider";
 import { Toaster } from "sonner";
-import AnimatedBackground from "@/components/Background";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -55,16 +54,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={poppins.variable} suppressHydrationWarning>
-      <body className={`${poppins.className} antialiased`}>
+    <html
+      lang="en"
+      className={`${poppins.variable} dark`}
+      suppressHydrationWarning
+    >
+      <body className={`${poppins.className} antialiased dark`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="dark"
+          forcedTheme="dark"
           disableTransitionOnChange={true}
         >
-          <AnimatedBackground />
-          <main className="relative z-10">
+          <main>
             <AOSProvider>{children}</AOSProvider>
           </main>
           <Toaster

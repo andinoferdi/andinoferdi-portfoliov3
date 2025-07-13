@@ -12,31 +12,34 @@ import Home from "@/components/sections/Home"
 import About from "@/components/sections/About"
 import Portfolio from "@/components/sections/Portfolio"
 import Contact from "@/components/sections/Contact"
+import Footer from "@/components/Footer"
 
 export default function HomePage() {
   const [showLoading, setShowLoading] = useState(true)
 
   return (
-    <>
+    <div style={{ background: "transparent", minHeight: "100vh", position: "relative" }}>
       <AnimatePresence mode="wait">
         {showLoading && <LoadingScreen onLoadingComplete={() => setShowLoading(false)} />}
       </AnimatePresence>
 
       {!showLoading && (
-        <div className="relative min-h-screen">
+        <>
           <CursorLight />
           <Navbar />
           <ScrollProgressBar />
           <AnimatedBackground />
-          <div className="relative z-10">
+          {/* CRITICAL: Remove all background styles from main content wrapper */}
+          <div style={{ background: "transparent", position: "relative", zIndex: 1 }}>
             <MusicPlayerContainer autoPlay={true} />
             <Home />
             <About />
             <Portfolio />
             <Contact />
+            <Footer />
           </div>
-        </div>
+        </>
       )}
-    </>
+    </div>
   )
 }

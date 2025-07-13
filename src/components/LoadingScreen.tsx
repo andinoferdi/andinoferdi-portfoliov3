@@ -212,12 +212,25 @@ const InteractiveLoadingAnimation: React.FC<{
   )
 }
 
+const DOT_COUNT = 12;
+
+function getRandomDots() {
+  return Array.from({ length: DOT_COUNT }, () => ({
+    left: `${Math.random() * 100}%`,
+    top: `${Math.random() * 100}%`,
+    duration: 3 + Math.random() * 2,
+    delay: Math.random() * 2,
+  }));
+}
+
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoadingComplete }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [progress, setProgress] = useState(0)
   const [currentStep, setCurrentStep] = useState(0)
   const [isPageLoaded, setIsPageLoaded] = useState(false)
   const [isMinimumTimeElapsed, setIsMinimumTimeElapsed] = useState(false)
+  const [dots, setDots] = useState<{left: string, top: string, duration: number, delay: number}[]>([]);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     // Prevent flickering by checking document state immediately
@@ -319,6 +332,11 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoadingComplete }) => {
     }
   }, [isPageLoaded, isMinimumTimeElapsed, onLoadingComplete])
 
+  useEffect(() => {
+    setIsClient(true);
+    setDots(getRandomDots());
+  }, []);
+
   const containerVariants: Variants = {
     exit: {
       opacity: 0,
@@ -373,22 +391,19 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoadingComplete }) => {
               />
 
               {/* Floating Dots */}
-              {[...Array(12)].map((_, i) => (
+              {isClient && dots.map((dot, i) => (
                 <motion.div
                   key={i}
                   className="absolute w-2 h-2 bg-blue-400/30 rounded-full"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
-                  }}
+                  style={{ left: dot.left, top: dot.top }}
                   animate={{
                     y: [0, -20, 0],
                     opacity: [0.3, 0.8, 0.3],
                   }}
                   transition={{
-                    duration: 3 + Math.random() * 2,
+                    duration: dot.duration,
                     repeat: Number.POSITIVE_INFINITY,
-                    delay: Math.random() * 2,
+                    delay: dot.delay,
                   }}
                 />
               ))}

@@ -17,7 +17,7 @@ interface StatCardProps {
 
 // Memoized Components
 const Header = memo(() => (
-  <div className="text-center lg:mb-8 mb-2 px-[5%]" data-aos="fade-up">
+  <div className="text-center lg:mb-8 mb-2 px-[5%]" data-aos="fade-up" style={{ background: "transparent" }}>
     <div className="inline-block relative group">
       <h2 className="text-4xl md:text-5xl font-bold gradient-text">About Me</h2>
     </div>
@@ -40,8 +40,9 @@ const ProfileImage = memo(() => (
     className="flex justify-end items-center sm:p-12 sm:py-0 sm:pb-0 p-0 py-2 pb-2"
     data-aos="zoom-in"
     data-aos-delay="300"
+    style={{ background: "transparent" }}
   >
-    <div className="relative group">
+    <div className="relative group" style={{ background: "transparent" }}>
       {/* Optimized gradient backgrounds with reduced complexity for mobile */}
       <div className="absolute -inset-6 opacity-[25%] z-0 hidden sm:block">
         <div className="absolute inset-0 bg-gradient-to-r from-primary via-blue-500 to-cyan-500 rounded-full blur-2xl animate-spin-slower" />
@@ -49,7 +50,7 @@ const ProfileImage = memo(() => (
         <div className="absolute inset-0 bg-gradient-to-t from-cyan-500 via-blue-500 to-primary rounded-full blur-2xl animate-float opacity-50" />
       </div>
 
-      <div className="relative">
+      <div className="relative" style={{ background: "transparent" }}>
         <div className="w-72 h-72 sm:w-80 sm:h-80 rounded-full overflow-hidden shadow-[0_0_40px_hsl(var(--primary)/0.3)] transform transition-all duration-700 group-hover:scale-105">
           <div className="absolute inset-0 border-4 border-border rounded-full z-20 transition-all duration-700 group-hover:border-primary/40 group-hover:scale-105" />
 
@@ -81,22 +82,28 @@ const ProfileImage = memo(() => (
 ProfileImage.displayName = "ProfileImage"
 
 const StatCard = memo<StatCardProps>(({ icon: Icon, color, value, label, description, delay }) => (
-  <div className="relative group" data-aos="fade-up" data-aos-delay={delay}>
-    <div className="relative z-10 bg-card/50 backdrop-blur-lg rounded-2xl p-6 border border-border overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl h-full flex flex-col justify-between">
+  <div className="relative group" data-aos="fade-up" data-aos-delay={delay} style={{ background: "transparent" }}>
+    <div
+      className="relative z-10 rounded-2xl p-6 border border-border overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl h-full flex flex-col justify-between"
+      style={{ background: "rgba(255, 255, 255, 0.02)" }}
+    >
       <div
         className={`absolute -z-10 inset-0 bg-gradient-to-br ${color} opacity-10 group-hover:opacity-20 transition-opacity duration-300`}
       ></div>
 
-      <div className="flex items-center justify-between mb-4">
-        <div className="w-16 h-16 rounded-full flex items-center justify-center bg-muted/50 transition-transform group-hover:rotate-6">
+      <div className="flex items-center justify-between mb-4" style={{ background: "transparent" }}>
+        <div
+          className="w-16 h-16 rounded-full flex items-center justify-center transition-transform group-hover:rotate-6"
+          style={{ background: "rgba(255, 255, 255, 0.05)" }}
+        >
           <Icon className="w-8 h-8 text-foreground" />
         </div>
         <span className="text-4xl font-bold text-foreground">{value}</span>
       </div>
 
-      <div>
+      <div style={{ background: "transparent" }}>
         <p className="text-sm uppercase tracking-wider text-muted-foreground mb-2">{label}</p>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between" style={{ background: "transparent" }}>
           <p className="text-xs text-muted-foreground">{description}</p>
           <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
         </div>
@@ -157,14 +164,23 @@ const AboutPage: React.FC = () => {
 
   return (
     <div
-      className="h-auto pb-[10%] text-foreground overflow-hidden px-[5%] sm:px-[5%] lg:px-[10%] bg-background/70"
+      className="h-auto pb-[10%] text-foreground overflow-hidden px-[5%] sm:px-[5%] lg:px-[10%]"
       id="About"
+      style={{ background: "transparent" }}
     >
       <Header />
 
-      <div className="w-full mx-auto relative">
-        <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          <div className="space-y-6 text-center lg:text-left" data-aos="fade-right" data-aos-delay="200">
+      <div className="w-full mx-auto relative" style={{ background: "transparent" }}>
+        <div
+          className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center"
+          style={{ background: "transparent" }}
+        >
+          <div
+            className="space-y-6 text-center lg:text-left"
+            data-aos="fade-right"
+            data-aos-delay="200"
+            style={{ background: "transparent" }}
+          >
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
               <span className="gradient-text">Hello, I&apos;m</span>
               <span className="block mt-2 text-foreground">Eki Zulfar Rachman</span>
@@ -178,9 +194,13 @@ const AboutPage: React.FC = () => {
 
             {/* Quote Section */}
             <div
-              className="relative bg-gradient-to-br from-primary/5 via-transparent to-blue-500/5 border border-border rounded-2xl p-4 my-6 backdrop-blur-md shadow-2xl overflow-hidden"
+              className="relative rounded-2xl p-4 my-6 shadow-2xl overflow-hidden"
               data-aos="fade-up"
               data-aos-delay="300"
+              style={{
+                background: "rgba(59, 130, 246, 0.02)",
+                border: "1px solid rgba(59, 130, 246, 0.1)",
+              }}
             >
               {/* Floating orbs background */}
               <div className="absolute top-2 right-4 w-16 h-16 bg-gradient-to-r from-primary/20 to-blue-500/20 rounded-full blur-xl"></div>
@@ -202,6 +222,7 @@ const AboutPage: React.FC = () => {
               className="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-4 lg:px-0 w-full"
               data-aos="fade-up"
               data-aos-delay="400"
+              style={{ background: "transparent" }}
             >
               <a
                 href="https://drive.google.com/drive/folders/1BOm51Grsabb3zj6Xk27K-iRwI1zITcpo"
@@ -212,7 +233,10 @@ const AboutPage: React.FC = () => {
                 </button>
               </a>
               <a href="#Portfolio" className="w-full lg:w-auto">
-                <button className="w-full lg:w-auto sm:px-6 py-2 sm:py-3 rounded-lg border border-primary/50 text-primary font-medium transition-all duration-300 hover:scale-105 flex items-center justify-center lg:justify-start gap-2 hover:bg-primary/10">
+                <button
+                  className="w-full lg:w-auto sm:px-6 py-2 sm:py-3 rounded-lg border border-primary/50 text-primary font-medium transition-all duration-300 hover:scale-105 flex items-center justify-center lg:justify-start gap-2"
+                  style={{ background: "rgba(59, 130, 246, 0.05)" }}
+                >
                   <Code className="w-4 h-4 sm:w-5 sm:h-5" /> View Portfolio
                 </button>
               </a>
@@ -223,8 +247,11 @@ const AboutPage: React.FC = () => {
         </div>
 
         <a href="#Portfolio">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 cursor-pointer">
-            {statsData.map((stat, index) => (
+          <div
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 cursor-pointer"
+            style={{ background: "transparent" }}
+          >
+            {statsData.map((stat) => (
               <StatCard key={stat.label} {...stat} />
             ))}
           </div>

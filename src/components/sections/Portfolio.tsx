@@ -1,47 +1,47 @@
-"use client";
+"use client"
 
-import type React from "react";
-import { useState, useCallback, useMemo } from "react";
-import { Code, Award, Boxes } from "lucide-react";
-import CardProject from "@/components/ui/CardProject";
-import TechStackIcon from "@/components/ui/TechStackIcon";
-import Certificate from "@/components/ui/Certificate";
+import type React from "react"
+import { useState, useCallback, useMemo, useEffect } from "react"
+import { Code, Award, Boxes } from "lucide-react"
+import CardProject from "@/components/ui/CardProject"
+import TechStackIcon from "@/components/ui/TechStackIcon"
+import Certificate from "@/components/ui/Certificate"
 
 // Types
 interface Project {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-  link: string;
-  github?: string;
-  techStack?: string[];
-  features?: string[];
+  id: number
+  title: string
+  description: string
+  image: string
+  link: string
+  github?: string
+  techStack?: string[]
+  features?: string[]
 }
 
 interface CertificateType {
-  id: number;
-  title: string;
-  image: string;
-  issuer: string;
-  date: string;
+  id: number
+  title: string
+  image: string
+  issuer: string
+  date: string
 }
 
 interface TechStack {
-  icon: string;
-  language: string;
+  icon: string
+  language: string
 }
 
 interface ToggleButtonProps {
-  onClick: () => void;
-  isShowingMore: boolean;
+  onClick: () => void
+  isShowingMore: boolean
 }
 
 interface TabButtonProps {
-  active: boolean;
-  onClick: () => void;
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
+  active: boolean
+  onClick: () => void
+  icon: React.ComponentType<{ className?: string }>
+  label: string
 }
 
 // Mock Data (replacing Supabase data)
@@ -59,8 +59,7 @@ const mockProjects: Project[] = [
   {
     id: 2,
     title: "Task Management App",
-    description:
-      "Collaborative task management application with real-time updates",
+    description: "Collaborative task management application with real-time updates",
     image: "/placeholder.svg?height=300&width=400",
     link: "https://example.com",
     github: "https://github.com/EkiZR",
@@ -107,7 +106,7 @@ const mockProjects: Project[] = [
     techStack: ["React", "Socket.io", "Express"],
     features: ["Real-time Messaging", "Multiple Rooms", "File Sharing"],
   },
-];
+]
 
 const mockCertificates: CertificateType[] = [
   {
@@ -152,7 +151,7 @@ const mockCertificates: CertificateType[] = [
     issuer: "Google",
     date: "2023",
   },
-];
+]
 
 const techStacks: TechStack[] = [
   { icon: "/html.png", language: "HTML" },
@@ -167,16 +166,14 @@ const techStacks: TechStack[] = [
   { icon: "/mongodb.svg", language: "MongoDB" },
   { icon: "/vercel.svg", language: "Vercel" },
   { icon: "/git.svg", language: "Git" },
-];
+]
 
 // Components
-const ToggleButton: React.FC<ToggleButtonProps> = ({
-  onClick,
-  isShowingMore,
-}) => (
+const ToggleButton: React.FC<ToggleButtonProps> = ({ onClick, isShowingMore }) => (
   <button
     onClick={onClick}
-    className="px-3 py-1.5 text-muted-foreground hover:text-foreground text-sm font-medium transition-all duration-300 ease-in-out flex items-center gap-2 bg-card/50 hover:bg-card/70 rounded-md border border-border hover:border-primary/50 backdrop-blur-sm group relative overflow-hidden"
+    className="px-3 py-1.5 text-muted-foreground hover:text-foreground text-sm font-medium transition-all duration-300 ease-in-out flex items-center gap-2 hover:bg-white/5 rounded-md border border-border/30 hover:border-primary/50 group relative overflow-hidden"
+    style={{ background: "transparent" }}
   >
     <span className="relative z-10 flex items-center gap-2">
       {isShowingMore ? "See Less" : "See More"}
@@ -191,83 +188,71 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
         strokeLinecap="round"
         strokeLinejoin="round"
         className={`transition-transform duration-300 ${
-          isShowingMore
-            ? "group-hover:-translate-y-0.5"
-            : "group-hover:translate-y-0.5"
+          isShowingMore ? "group-hover:-translate-y-0.5" : "group-hover:translate-y-0.5"
         }`}
       >
-        <polyline
-          points={isShowingMore ? "18 15 12 9 6 15" : "6 9 12 15 18 9"}
-        ></polyline>
+        <polyline points={isShowingMore ? "18 15 12 9 6 15" : "6 9 12 15 18 9"}></polyline>
       </svg>
     </span>
     <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary/50 transition-all duration-300 group-hover:w-full"></span>
   </button>
-);
+)
 
-const TabButton: React.FC<TabButtonProps> = ({
-  active,
-  onClick,
-  icon: Icon,
-  label,
-}) => (
+const TabButton: React.FC<TabButtonProps> = ({ active, onClick, icon: Icon, label }) => (
   <button
     onClick={onClick}
     className={`flex-1 flex flex-col items-center gap-2 py-4 px-6 rounded-xl transition-all duration-300 ${
       active
-        ? "bg-gradient-to-br from-primary/20 to-blue-500/20 text-foreground border border-primary/30"
-        : "bg-card/50 text-muted-foreground hover:text-foreground hover:bg-card/70 border border-border"
+        ? "text-foreground border border-primary/30"
+        : "text-muted-foreground hover:text-foreground border border-border/30"
     }`}
+    style={{
+      background: active ? "rgba(59, 130, 246, 0.05)" : "rgba(255, 255, 255, 0.02)",
+      backdropFilter: "none",
+      WebkitBackdropFilter: "none",
+    }}
   >
-    <Icon
-      className={`w-5 h-5 transition-all duration-300 ${
-        active ? "text-primary scale-110" : ""
-      }`}
-    />
+    <Icon className={`w-5 h-5 transition-all duration-300 ${active ? "text-primary scale-110" : ""}`} />
     <span className="text-sm font-medium">{label}</span>
   </button>
-);
+)
 
 const Portfolio: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<
-    "projects" | "certificates" | "techstack"
-  >("projects");
-  const [showAllProjects, setShowAllProjects] = useState(false);
-  const [showAllCertificates, setShowAllCertificates] = useState(false);
+  const [activeTab, setActiveTab] = useState<"projects" | "certificates" | "techstack">("projects")
+  const [showAllProjects, setShowAllProjects] = useState(false)
+  const [showAllCertificates, setShowAllCertificates] = useState(false)
+  const [initialItems, setInitialItems] = useState(6)
 
-  const isMobile =
-    typeof window !== "undefined" ? window.innerWidth < 768 : false;
-  const initialItems = isMobile ? 4 : 6;
+  useEffect(() => {
+    if (window.innerWidth < 768) setInitialItems(4)
+  }, [])
 
   const toggleShowMore = useCallback((type: "projects" | "certificates") => {
     if (type === "projects") {
-      setShowAllProjects((prev) => !prev);
+      setShowAllProjects((prev) => !prev)
     } else {
-      setShowAllCertificates((prev) => !prev);
+      setShowAllCertificates((prev) => !prev)
     }
-  }, []);
+  }, [])
 
   const displayedProjects = useMemo(
-    () =>
-      showAllProjects ? mockProjects : mockProjects.slice(0, initialItems),
-    [showAllProjects, initialItems]
-  );
+    () => (showAllProjects ? mockProjects : mockProjects.slice(0, initialItems)),
+    [showAllProjects, initialItems],
+  )
 
   const displayedCertificates = useMemo(
-    () =>
-      showAllCertificates
-        ? mockCertificates
-        : mockCertificates.slice(0, initialItems),
-    [showAllCertificates, initialItems]
-  );
+    () => (showAllCertificates ? mockCertificates : mockCertificates.slice(0, initialItems)),
+    [showAllCertificates, initialItems],
+  )
 
   return (
     <div
-      className="md:px-[10%] px-[5%] w-full bg-background/70 overflow-hidden"
+      className="md:px-[10%] px-[5%] w-full overflow-hidden pb-16 relative"
       id="Portfolio"
+      style={{ background: "transparent" }}
     >
       {/* Header */}
-      <div className="text-center pb-10" data-aos="fade-up">
+      <div className="text-center pb-10" data-aos="fade-up" style={{ background: "transparent" }}>
         <h2 className="inline-block text-3xl md:text-5xl font-bold text-center mx-auto gradient-text">
           Portfolio Showcase
         </h2>
@@ -276,17 +261,21 @@ const Portfolio: React.FC = () => {
           data-aos="fade-up"
           data-aos-delay="100"
         >
-          Explore my journey through projects, certifications, and technical
-          expertise. Each section represents a milestone in my continuous
-          learning path.
+          Explore my journey through projects, certifications, and technical expertise. Each section represents a
+          milestone in my continuous learning path.
         </p>
       </div>
 
       {/* Tab Navigation */}
       <div
-        className="flex flex-col sm:flex-row gap-4 mb-8 p-2 bg-card/50 backdrop-blur-xl rounded-2xl border border-border"
+        className="flex flex-col sm:flex-row gap-4 mb-8 p-2 rounded-2xl border border-border/30"
         data-aos="fade-up"
         data-aos-delay="200"
+        style={{
+          background: "rgba(255, 255, 255, 0.01)",
+          backdropFilter: "none",
+          WebkitBackdropFilter: "none",
+        }}
       >
         <TabButton
           active={activeTab === "projects"}
@@ -309,17 +298,13 @@ const Portfolio: React.FC = () => {
       </div>
 
       {/* Tab Content */}
-      <div className="min-h-[400px]">
+      <div className="min-h-[400px]" style={{ background: "transparent" }}>
         {/* Projects Tab */}
         {activeTab === "projects" && (
-          <div className="space-y-6">
+          <div className="space-y-6" style={{ background: "transparent" }}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-5">
               {displayedProjects.map((project, index) => (
-                <div
-                  key={project.id}
-                  data-aos="fade-up"
-                  data-aos-delay={index * 100}
-                >
+                <div key={project.id} data-aos="fade-up" data-aos-delay={index * 100}>
                   <CardProject
                     id={project.id}
                     title={project.title}
@@ -333,15 +318,8 @@ const Portfolio: React.FC = () => {
               ))}
             </div>
             {mockProjects.length > initialItems && (
-              <div
-                className="mt-6 w-full flex justify-start"
-                data-aos="fade-up"
-                data-aos-delay="300"
-              >
-                <ToggleButton
-                  onClick={() => toggleShowMore("projects")}
-                  isShowingMore={showAllProjects}
-                />
+              <div className="mt-6 w-full flex justify-start" data-aos="fade-up" data-aos-delay="300">
+                <ToggleButton onClick={() => toggleShowMore("projects")} isShowingMore={showAllProjects} />
               </div>
             )}
           </div>
@@ -349,32 +327,17 @@ const Portfolio: React.FC = () => {
 
         {/* Certificates Tab */}
         {activeTab === "certificates" && (
-          <div className="space-y-6">
+          <div className="space-y-6" style={{ background: "transparent" }}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {displayedCertificates.map((certificate, index) => (
-                <div
-                  key={certificate.id}
-                  data-aos="zoom-in"
-                  data-aos-delay={index * 100}
-                >
-                  <Certificate
-                    image={certificate.image}
-                    title={certificate.title}
-                    issuer={certificate.issuer}
-                  />
+                <div key={certificate.id} data-aos="zoom-in" data-aos-delay={index * 100}>
+                  <Certificate image={certificate.image} title={certificate.title} issuer={certificate.issuer} />
                 </div>
               ))}
             </div>
             {mockCertificates.length > initialItems && (
-              <div
-                className="mt-6 w-full flex justify-start"
-                data-aos="fade-up"
-                data-aos-delay="300"
-              >
-                <ToggleButton
-                  onClick={() => toggleShowMore("certificates")}
-                  isShowingMore={showAllCertificates}
-                />
+              <div className="mt-6 w-full flex justify-start" data-aos="fade-up" data-aos-delay="300">
+                <ToggleButton onClick={() => toggleShowMore("certificates")} isShowingMore={showAllCertificates} />
               </div>
             )}
           </div>
@@ -382,14 +345,10 @@ const Portfolio: React.FC = () => {
 
         {/* Tech Stack Tab */}
         {activeTab === "techstack" && (
-          <div className="pb-[5%]">
+          <div className="pb-[5%]" style={{ background: "transparent" }}>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 lg:gap-8 gap-5">
               {techStacks.map((stack, index) => (
-                <div
-                  key={index}
-                  data-aos="flip-left"
-                  data-aos-delay={index * 100}
-                >
+                <div key={index} data-aos="flip-left" data-aos-delay={index * 100}>
                   <TechStackIcon icon={stack.icon} language={stack.language} />
                 </div>
               ))}
@@ -398,7 +357,7 @@ const Portfolio: React.FC = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Portfolio;
+export default Portfolio

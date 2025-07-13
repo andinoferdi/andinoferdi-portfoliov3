@@ -2,28 +2,13 @@
 
 import type React from "react"
 import { useEffect, useRef } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion } from "framer-motion"
 import InteractiveGridPattern from "@/components/magicui/interactive-grid-pattern"
 
 const ORB_COUNT = 8
 
 const AnimatedBackground: React.FC = () => {
   const backgroundRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll()
-
-  // Main vertical parallax (background moves slower than page)
-  const bgY = useTransform(scrollYProgress, [0, 1], [0, -200])
-
-  // Background opacity changes very slightly while scrolling
-  const bgOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.85, 0.7])
-
-  // Gradient overlay opacity
-  const overlayOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.3, 0.5, 0.7, 0.9])
-
-  // Pre-compute a MotionValue for each orb so hooks aren't inside a loop later
-  const orbYValues = Array.from({ length: ORB_COUNT }, (_, i) =>
-    useTransform(scrollYProgress, [0, 1], [0, -50 - i * 10]),
-  )
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -44,27 +29,32 @@ const AnimatedBackground: React.FC = () => {
       ref={backgroundRef}
       className="fixed inset-0 z-0 interactive-background scrolling-background"
       style={{
-        y: bgY,
-        opacity: bgOpacity,
+        // CRITICAL: Remove all scroll-based changes - keep completely static
+        opacity: 1, // Fixed opacity - no scroll changes
         pointerEvents: "none",
         isolation: "isolate",
-        height: "100%",
-        minHeight: "100vh",
+        height: "100vh",
+        width: "100vw",
+        background: "transparent",
+        position: "fixed",
+        top: 0,
+        left: 0,
       }}
     >
-      {/* MagicUI grid -------------------------------------------------------- */}
-      <InteractiveGridPattern className="absolute inset-0" width={25} height={25} />
+      {/* MagicUI grid - completely static with consistent opacity */}
+      <div className="absolute inset-0 w-full h-full opacity-100">
+        <InteractiveGridPattern className="absolute inset-0 w-full h-full" width={25} height={25} />
+      </div>
 
-      {/* Floating orbs ------------------------------------------------------- */}
+      {/* Floating orbs - consistent across all sections */}
       <motion.div className="absolute inset-0 pointer-events-none">
         {Array.from({ length: ORB_COUNT }).map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 rounded-full bg-primary/20 blur-sm"
+            className="absolute w-1 h-1 rounded-full bg-blue-400/20 blur-sm"
             style={{
               left: `${15 + i * 12}%`,
               top: `${20 + i * 8}%`,
-              y: orbYValues[i],
             }}
             animate={{
               y: [0, -15, 0],
@@ -80,16 +70,6 @@ const AnimatedBackground: React.FC = () => {
           />
         ))}
       </motion.div>
-
-      {/* Depth gradient overlay --------------------------------------------- */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background)/0.1) 70%, hsl(var(--background)/0.3) 100%)",
-          opacity: overlayOpacity,
-        }}
-      />
     </motion.div>
   )
 }

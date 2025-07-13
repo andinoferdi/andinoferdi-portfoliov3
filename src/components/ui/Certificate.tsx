@@ -20,9 +20,16 @@ const Certificate: React.FC<CertificateProps> = ({ image, title, issuer }) => {
   return (
     <>
       {/* Certificate Thumbnail */}
-      <div className="relative group cursor-pointer" onClick={handleOpen}>
-        <div className="relative overflow-hidden rounded-2xl bg-card/50 backdrop-blur-sm border border-border transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-primary/50">
-          <div className="aspect-[4/3] relative">
+      <div className="relative group cursor-pointer" onClick={handleOpen} style={{ background: "transparent" }}>
+        <div
+          className="relative overflow-hidden rounded-2xl border border-border transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-primary/50"
+          style={{
+            background: "rgba(255, 255, 255, 0.02)",
+            backdropFilter: "none",
+            WebkitBackdropFilter: "none",
+          }}
+        >
+          <div className="aspect-[4/3] relative" style={{ background: "transparent" }}>
             <Image
               src={image || "/placeholder.svg"}
               alt={title}
@@ -33,14 +40,21 @@ const Certificate: React.FC<CertificateProps> = ({ image, title, issuer }) => {
 
             {/* Hover Overlay */}
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="bg-background/20 backdrop-blur-sm rounded-full p-3 border border-border">
+              <div
+                className="rounded-full p-3 border border-border"
+                style={{
+                  background: "rgba(255, 255, 255, 0.1)",
+                  backdropFilter: "none",
+                  WebkitBackdropFilter: "none",
+                }}
+              >
                 <Maximize2 className="w-6 h-6 text-foreground" />
               </div>
             </div>
           </div>
 
           {/* Certificate Info */}
-          <div className="p-4">
+          <div className="p-4" style={{ background: "transparent" }}>
             <h3 className="font-semibold text-foreground text-sm mb-1 line-clamp-2">{title}</h3>
             <p className="text-muted-foreground text-xs">{issuer}</p>
           </div>
@@ -49,12 +63,22 @@ const Certificate: React.FC<CertificateProps> = ({ image, title, issuer }) => {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 backdrop-blur-sm">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{
+            background: "rgba(0, 0, 0, 0.8)",
+            backdropFilter: "blur(4px)",
+            WebkitBackdropFilter: "blur(4px)",
+          }}
+        >
           <div className="relative max-w-4xl max-h-[90vh] w-full mx-4">
             {/* Close Button */}
             <button
               onClick={handleClose}
-              className="absolute -top-12 right-0 z-10 p-2 rounded-full bg-background/10 hover:bg-background/20 text-foreground transition-colors duration-200"
+              className="absolute -top-12 right-0 z-10 p-2 rounded-full hover:bg-background/20 text-foreground transition-colors duration-200"
+              style={{
+                background: "rgba(255, 255, 255, 0.1)",
+              }}
             >
               <X className="w-6 h-6" />
             </button>

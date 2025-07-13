@@ -31,12 +31,19 @@ const CardProject: React.FC<CardProjectProps> = ({ id, title, description, image
   }
 
   return (
-    <div className="group relative w-full">
-      <div className="relative overflow-hidden rounded-xl bg-card/50 backdrop-blur-lg border border-border shadow-2xl transition-all duration-300 hover:shadow-primary/20">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-blue-500/10 to-cyan-500/10 opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
+    <div className="group relative w-full" style={{ background: "transparent" }}>
+      <div
+        className="relative overflow-hidden rounded-xl border border-border/50 shadow-2xl transition-all duration-300 hover:shadow-primary/20"
+        style={{
+          background: "rgba(255, 255, 255, 0.02)",
+          backdropFilter: "none",
+          WebkitBackdropFilter: "none",
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-blue-500/5 to-cyan-500/5 opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
 
-        <div className="relative p-5 z-10">
-          <div className="relative overflow-hidden rounded-lg mb-4">
+        <div className="relative p-5 z-10" style={{ background: "transparent" }}>
+          <div className="relative overflow-hidden rounded-lg mb-4" style={{ background: "transparent" }}>
             <Image
               src={image || "/placeholder.svg"}
               alt={title}
@@ -46,14 +53,14 @@ const CardProject: React.FC<CardProjectProps> = ({ id, title, description, image
             />
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-3" style={{ background: "transparent" }}>
             <h3 className="text-xl font-semibold gradient-text">{title}</h3>
 
             <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">{description}</p>
 
             {/* Tech Stack */}
             {techStack && techStack.length > 0 && (
-              <div className="flex flex-wrap gap-1">
+              <div className="flex flex-wrap gap-1" style={{ background: "transparent" }}>
                 {techStack.slice(0, 3).map((tech, index) => (
                   <span
                     key={index}
@@ -70,8 +77,8 @@ const CardProject: React.FC<CardProjectProps> = ({ id, title, description, image
               </div>
             )}
 
-            <div className="pt-4 flex items-center justify-between gap-2">
-              <div className="flex gap-2">
+            <div className="pt-4 flex items-center justify-between gap-2" style={{ background: "transparent" }}>
+              <div className="flex gap-2" style={{ background: "transparent" }}>
                 {link && (
                   <a
                     href={link}
@@ -101,7 +108,12 @@ const CardProject: React.FC<CardProjectProps> = ({ id, title, description, image
 
               <Link
                 href={`/project/${id}`}
-                className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-muted/50 hover:bg-muted/70 text-foreground transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
+                className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg border border-primary/50 text-foreground transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
+                style={{
+                  background: "rgba(255, 255, 255, 0.02)",
+                  backdropFilter: "none",
+                  WebkitBackdropFilter: "none",
+                }}
               >
                 <span>Details</span>
                 <ArrowRight className="w-3 h-3" />

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from "react"
+import React from "react"
 import { useSupabaseMusicPlayer } from "@/hooks/useSupabaseMusicPlayer"
 import MiniPlayer from "./MiniPlayer"
 import FullPlayer from "./FullPlayer"
@@ -13,19 +13,33 @@ const MusicPlayerContainer: React.FC<MusicPlayerContainerProps> = ({ autoPlay = 
   const { songs, loading } = useSupabaseMusicPlayer()
   const audioRef = React.useRef<HTMLAudioElement>(null);
   const [currentIndex, setCurrentIndex] = React.useState(0)
-  const [isPlaying, setIsPlaying] = React.useState(false)
+  const [isPlaying, setIsPlaying] = React.useState(autoPlay)  // Use autoPlay here
   const [isExpanded, setIsExpanded] = React.useState(false)
   const [currentTime, setCurrentTime] = React.useState(0)
   const [volume, setVolume] = React.useState(0.7)
 
   // Sinkronisasi play/pause
   React.useEffect(() => {
-    if (!audioRef.current) return;
-    if (isPlaying) {
-      audioRef.current.play();
-    } else {
-      audioRef.current.pause();
-    }
+    const currentAudio = audioRef.current;
+    if (!currentAudio) return;
+    
+    const playAudio = async () => {
+      try {
+        if (isPlaying) {
+          await currentAudio.play();
+        } else {
+          currentAudio.pause();
+        }
+      } catch (error) {
+        // Handle autoplay prevention
+        if (error instanceof DOMException && error.name === 'NotAllowedError') {
+          console.warn('Autoplay was prevented. User interaction required.');
+          setIsPlaying(false);
+        }
+      }
+    };
+
+    playAudio();
   }, [isPlaying, songs, currentIndex])
 
   // Sinkronisasi volume

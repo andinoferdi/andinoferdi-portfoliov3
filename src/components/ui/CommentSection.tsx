@@ -25,20 +25,20 @@ const mockComments: Comment[] = [
     id: 1,
     user_name: "Admin",
     content: "Welcome to my portfolio! Feel free to leave your thoughts and feedback.",
-    created_at: new Date().toISOString(),
+    created_at: "2024-06-01T10:00:00.000Z",
     is_pinned: true,
   },
   {
     id: 2,
     user_name: "John Doe",
     content: "Amazing portfolio! The design is really clean and modern.",
-    created_at: new Date(Date.now() - 86400000).toISOString(),
+    created_at: "2024-05-31T10:00:00.000Z",
   },
   {
     id: 3,
     user_name: "Jane Smith",
     content: "Love the animations and smooth transitions. Great work!",
-    created_at: new Date(Date.now() - 172800000).toISOString(),
+    created_at: "2024-05-30T10:00:00.000Z",
   },
 ]
 
@@ -121,7 +121,10 @@ const CommentSection: React.FC = () => {
   const totalComments = comments.length + (pinnedComment ? 1 : 0)
 
   return (
-    <div className="w-full bg-gradient-to-b from-card/50 to-card/30 rounded-2xl backdrop-blur-xl shadow-xl border border-border">
+    <div
+      className="w-full rounded-2xl shadow-xl border border-border"
+      style={{ background: "rgba(255, 255, 255, 0.02)" }}
+    >
       <div className="p-6 border-b border-border">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-xl bg-primary/20">
@@ -146,7 +149,8 @@ const CommentSection: React.FC = () => {
               onChange={(e) => setFormData((prev) => ({ ...prev, userName: e.target.value }))}
               maxLength={15}
               placeholder="Enter your name"
-              className="w-full p-3 rounded-xl bg-muted/50 border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+              className="w-full p-3 rounded-xl border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+              style={{ background: "rgba(255, 255, 255, 0.05)" }}
               required
             />
           </div>
@@ -160,7 +164,8 @@ const CommentSection: React.FC = () => {
               maxLength={200}
               onChange={(e) => setFormData((prev) => ({ ...prev, newComment: e.target.value }))}
               placeholder="Write your message here..."
-              className="w-full p-4 rounded-xl bg-muted/50 border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none min-h-[120px]"
+              className="w-full p-4 rounded-xl border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none min-h-[120px]"
+              style={{ background: "rgba(255, 255, 255, 0.05)" }}
               required
             />
           </div>
@@ -169,7 +174,10 @@ const CommentSection: React.FC = () => {
             <label className="block text-sm font-medium text-foreground">
               Profile Photo <span className="text-muted-foreground">(optional)</span>
             </label>
-            <div className="flex items-center gap-4 p-4 bg-muted/50 border border-border rounded-xl">
+            <div
+              className="flex items-center gap-4 p-4 border border-border rounded-xl"
+              style={{ background: "rgba(255, 255, 255, 0.05)" }}
+            >
               {imagePreview ? (
                 <div className="flex items-center gap-4">
                   <img
@@ -237,7 +245,10 @@ const CommentSection: React.FC = () => {
         <div className="space-y-4 h-[328px] overflow-y-auto overflow-x-hidden custom-scrollbar pt-1 pr-1">
           {/* Pinned Comment */}
           {pinnedComment && (
-            <div className="px-4 pt-4 pb-2 rounded-xl border transition-all group hover:shadow-lg hover:-translate-y-0.5 bg-gradient-to-r from-primary/10 to-blue-500/10 border-primary/30 hover:bg-gradient-to-r hover:from-primary/15 hover:to-blue-500/15">
+            <div
+              className="px-4 pt-4 pb-2 rounded-xl border transition-all group hover:shadow-lg hover:-translate-y-0.5 border-primary/30"
+              style={{ background: "rgba(59, 130, 246, 0.1)" }}
+            >
               <div className="flex items-center gap-2 mb-3 text-primary">
                 <Pin className="w-4 h-4" />
                 <span className="text-xs font-medium uppercase tracking-wide">Pinned Comment</span>
@@ -274,7 +285,8 @@ const CommentSection: React.FC = () => {
             comments.map((comment) => (
               <div
                 key={comment.id}
-                className="px-4 pt-4 pb-2 rounded-xl border transition-all group hover:shadow-lg hover:-translate-y-0.5 bg-card/50 border-border hover:bg-card/70"
+                className="px-4 pt-4 pb-2 rounded-xl border transition-all group hover:shadow-lg hover:-translate-y-0.5 border-border"
+                style={{ background: "rgba(255, 255, 255, 0.05)" }}
               >
                 <div className="flex items-start gap-3">
                   {comment.profile_image ? (
