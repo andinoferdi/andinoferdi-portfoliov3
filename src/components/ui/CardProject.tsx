@@ -1,37 +1,48 @@
-"use client"
+"use client";
 
-import type React from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { ExternalLink, ArrowRight, Github } from "lucide-react"
+import type React from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { ExternalLink, ArrowRight, Github } from "lucide-react";
 
 interface CardProjectProps {
-  id: number
-  title: string
-  description: string
-  image: string
-  link: string
-  github?: string
-  techStack?: string[]
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  link: string;
+  github?: string;
+  techStack?: string[];
 }
 
-const CardProject: React.FC<CardProjectProps> = ({ id, title, description, image, link, github, techStack }) => {
+const CardProject: React.FC<CardProjectProps> = ({
+  id,
+  title,
+  description,
+  image,
+  link,
+  github,
+  techStack,
+}) => {
   const handleLiveDemo = (e: React.MouseEvent) => {
     if (!link) {
-      e.preventDefault()
-      alert("Live demo link is not available")
+      e.preventDefault();
+      alert("Live demo link is not available");
     }
-  }
+  };
 
   const handleGithub = (e: React.MouseEvent) => {
     if (!github) {
-      e.preventDefault()
-      alert("GitHub repository is not available")
+      e.preventDefault();
+      alert("GitHub repository is not available");
     }
-  }
+  };
 
   return (
-    <div className="group relative w-full" style={{ background: "transparent" }}>
+    <div
+      className="group relative w-full"
+      style={{ background: "transparent" }}
+    >
       <div
         className="relative overflow-hidden rounded-xl border border-border/50 shadow-2xl transition-all duration-300 hover:shadow-primary/20"
         style={{
@@ -42,8 +53,14 @@ const CardProject: React.FC<CardProjectProps> = ({ id, title, description, image
       >
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-blue-500/5 to-cyan-500/5 opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
 
-        <div className="relative p-5 z-10" style={{ background: "transparent" }}>
-          <div className="relative overflow-hidden rounded-lg mb-4" style={{ background: "transparent" }}>
+        <div
+          className="relative p-5 z-10"
+          style={{ background: "transparent" }}
+        >
+          <div
+            className="relative overflow-hidden rounded-lg mb-4"
+            style={{ background: "transparent" }}
+          >
             <Image
               src={image || "/placeholder.svg"}
               alt={title}
@@ -56,11 +73,16 @@ const CardProject: React.FC<CardProjectProps> = ({ id, title, description, image
           <div className="space-y-3" style={{ background: "transparent" }}>
             <h3 className="text-xl font-semibold gradient-text">{title}</h3>
 
-            <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">{description}</p>
+            <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
+              {description}
+            </p>
 
             {/* Tech Stack */}
             {techStack && techStack.length > 0 && (
-              <div className="flex flex-wrap gap-1" style={{ background: "transparent" }}>
+              <div
+                className="flex flex-wrap gap-1"
+                style={{ background: "transparent" }}
+              >
                 {techStack.slice(0, 3).map((tech, index) => (
                   <span
                     key={index}
@@ -77,7 +99,10 @@ const CardProject: React.FC<CardProjectProps> = ({ id, title, description, image
               </div>
             )}
 
-            <div className="pt-4 flex items-center justify-between gap-2" style={{ background: "transparent" }}>
+            <div
+              className="pt-4 flex items-center justify-between gap-2"
+              style={{ background: "transparent" }}
+            >
               <div className="flex gap-2" style={{ background: "transparent" }}>
                 {link && (
                   <a
@@ -125,7 +150,7 @@ const CardProject: React.FC<CardProjectProps> = ({ id, title, description, image
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CardProject
+export default CardProject;

@@ -1,51 +1,93 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import type { Song, MusicPlayerState } from "@/types/music";
-import playlist from "@/data/playlist.json";
-
-const defaultPlaylist: Song[] = playlist as Song[];
+import type { MusicPlayerState } from "@/types/music";
+import { useSupabaseMusicPlayer } from "./useSupabaseMusicPlayer";
 
 export const useMusicPlayer = () => {
+  const { songs, loading } = useSupabaseMusicPlayer();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [state, setState] = useState<MusicPlayerState>({
-    currentSong: defaultPlaylist[0],
+    currentSong: songs.length > 0 ? songs[0] : null,
     isPlaying: false,
     currentTime: 0,
     duration: 0,
     volume: 0.7,
     isExpanded: false,
-    playlist: defaultPlaylist,
+    playlist: songs,
     currentIndex: 0,
-    isLoading: false,
+    isLoading: loading,
     isShuffled: false,
     repeatMode: "none",
   });
 
-  // Initialize audio element
+  // Update playlist when songs are loaded
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (songs.length > 0) {
+      setState((prev) => ({
+        ...prev,
+        playlist: songs,
+        currentSong: prev.currentSong || songs[0],
+        isLoading: loading,
+      }));
+    }
+  }, [songs, loading]);
+
+  // Initialize audio element ONLY ONCE
+  useEffect(() => {
+    if (typeof window !== "undefined" && !audioRef.current) {
       audioRef.current = new Audio();
       audioRef.current.volume = state.volume;
       audioRef.current.preload = "metadata";
-
-      // Set crossOrigin to avoid CORS issues
       audioRef.current.crossOrigin = "anonymous";
     }
 
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
+        audioRef.current.src = "";
         audioRef.current = null;
       }
     };
+  }, []); // Remove state.volume dependency to prevent recreation
+
+  // Separate useEffect for volume changes ONLY
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = Math.max(0, Math.min(1, state.volume));
+    }
   }, [state.volume]);
 
   // Load current song
   useEffect(() => {
     if (audioRef.current && state.currentSong) {
-      audioRef.current.src = state.currentSong.audioUrl;
+      // Store current playback state
+      const wasPlaying = state.isPlaying;
+      const currentTime = audioRef.current.currentTime;
+
+      audioRef.current.src = state.currentSong.audio_url;
       audioRef.current.load();
+
+      // Restore volume after load
+      audioRef.current.volume = state.volume;
+
+      // If was playing, resume after load
+      if (wasPlaying) {
+        const handleCanPlayThrough = () => {
+          if (audioRef.current) {
+            audioRef.current.currentTime = currentTime;
+            audioRef.current.play().catch(console.error);
+            audioRef.current.removeEventListener(
+              "canplaythrough",
+              handleCanPlayThrough
+            );
+          }
+        };
+        audioRef.current.addEventListener(
+          "canplaythrough",
+          handleCanPlayThrough
+        );
+      }
     }
   }, [state.currentSong]);
 
@@ -86,12 +128,23 @@ export const useMusicPlayer = () => {
       console.error("Audio loading error");
     };
 
+    // Handle play/pause state changes
+    const handlePlay = () => {
+      setState((prev) => ({ ...prev, isPlaying: true }));
+    };
+
+    const handlePause = () => {
+      setState((prev) => ({ ...prev, isPlaying: false }));
+    };
+
     audio.addEventListener("loadedmetadata", handleLoadedMetadata);
     audio.addEventListener("timeupdate", handleTimeUpdate);
     audio.addEventListener("ended", handleEnded);
     audio.addEventListener("loadstart", handleLoadStart);
     audio.addEventListener("canplay", handleCanPlay);
     audio.addEventListener("error", handleError);
+    audio.addEventListener("play", handlePlay);
+    audio.addEventListener("pause", handlePause);
 
     return () => {
       audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
@@ -100,6 +153,8 @@ export const useMusicPlayer = () => {
       audio.removeEventListener("loadstart", handleLoadStart);
       audio.removeEventListener("canplay", handleCanPlay);
       audio.removeEventListener("error", handleError);
+      audio.removeEventListener("play", handlePlay);
+      audio.removeEventListener("pause", handlePause);
     };
   }, [state.currentSong]);
 
@@ -132,7 +187,17 @@ export const useMusicPlayer = () => {
         await audioRef.current.play();
         setState((prev) => ({ ...prev, isPlaying: true }));
       } catch (error) {
-        console.error("Play error:", error);
+        // Handle specific abort errors that occur when play() is interrupted
+        if (
+          error instanceof DOMException &&
+          (error.name === "AbortError" || error.name === "NotAllowedError")
+        ) {
+          console.log("Play was interrupted or not allowed:", error.message);
+          setState((prev) => ({ ...prev, isPlaying: false }));
+        } else {
+          console.error("Play error:", error);
+          setState((prev) => ({ ...prev, isPlaying: false }));
+        }
       }
     }
   }, []);
@@ -144,11 +209,11 @@ export const useMusicPlayer = () => {
     }
   }, []);
 
-  const togglePlay = useCallback(() => {
+  const togglePlay = useCallback(async () => {
     if (state.isPlaying) {
       pause();
     } else {
-      play();
+      await play();
     }
   }, [state.isPlaying, play, pause]);
 
@@ -183,9 +248,14 @@ export const useMusicPlayer = () => {
   }, []);
 
   const setVolume = useCallback((volume: number) => {
+    const clampedVolume = Math.max(0, Math.min(1, volume));
+
+    // Update state
+    setState((prev) => ({ ...prev, volume: clampedVolume }));
+
+    // Immediately update audio element volume
     if (audioRef.current) {
-      audioRef.current.volume = volume;
-      setState((prev) => ({ ...prev, volume }));
+      audioRef.current.volume = clampedVolume;
     }
   }, []);
 

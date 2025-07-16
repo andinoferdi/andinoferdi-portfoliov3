@@ -11,15 +11,6 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
-  {
-    rules: {
-      // Disable rules that might conflict with React 19
-      "react/no-unescaped-entities": "off",
-      "@next/next/no-page-custom-font": "off",
-      // Allow React 19 features
-      "react-hooks/exhaustive-deps": "warn",
-    },
-  },
 ];
 
 export default eslintConfig;

@@ -1,45 +1,67 @@
-"use client"
+import { StarsBackground } from "@/components/background/stars";
+import HeroSection from "@/sections/hero/index";
+import AboutSection from "@/sections/about/index";
+import Portfolio from "@/sections/portfolio/index";
+import { BottomNav } from "@/components/ui/bottomnav";
+import MusicPlayer from "@/components/MusicPlayer/music-player";
+import {
+  IconBrandGithub,
+  IconBrandX,
+  IconHome,
+  IconNewSection,
+  IconTerminal2,
+} from "@tabler/icons-react";
 
-import { useState } from "react"
-import { AnimatePresence } from "framer-motion"
-import LoadingScreen from "@/components/LoadingScreen"
-import Navbar from "@/components/Navbar"
-import ScrollProgressBar from "@/components/ScrollProgressBar"
-import AnimatedBackground from "@/components/Background"
-import CursorLight from "@/components/CursorLight"
-import MusicPlayerContainer from "@/components/MusicPlayer/MusicPlayerContainer"
-import Home from "@/components/sections/Home"
-import About from "@/components/sections/About"
-import Portfolio from "@/components/sections/Portfolio"
-import Contact from "@/components/sections/Contact"
-import Footer from "@/components/Footer"
-
-export default function HomePage() {
-  const [showLoading, setShowLoading] = useState(true)
+export default function Home() {
+  const links = [
+    {
+      title: "Home",
+      icon: (
+        <IconHome className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "#",
+    },
+    {
+      title: "Projects",
+      icon: (
+        <IconTerminal2 className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "#Portfolio",
+    },
+    {
+      title: "About",
+      icon: (
+        <IconNewSection className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "#about",
+    },
+    {
+      title: "Twitter",
+      icon: (
+        <IconBrandX className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "https://twitter.com/yourusername",
+    },
+    {
+      title: "GitHub",
+      icon: (
+        <IconBrandGithub className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "https://github.com/yourusername",
+    },
+  ];
 
   return (
-    <div style={{ background: "transparent", minHeight: "100vh", position: "relative" }}>
-      <AnimatePresence mode="wait">
-        {showLoading && <LoadingScreen onLoadingComplete={() => setShowLoading(false)} />}
-      </AnimatePresence>
-
-      {!showLoading && (
-        <>
-          <CursorLight />
-          <Navbar />
-          <ScrollProgressBar />
-          <AnimatedBackground />
-          {/* CRITICAL: Remove all background styles from main content wrapper */}
-          <div style={{ background: "transparent", position: "relative", zIndex: 1 }}>
-            <MusicPlayerContainer autoPlay={true} />
-            <Home />
-            <About />
-            <Portfolio />
-            <Contact />
-            <Footer />
-          </div>
-        </>
-      )}
-    </div>
-  )
+    <StarsBackground>
+      <div className="bg-transparent relative">
+        <HeroSection />
+        <AboutSection />
+        <Portfolio />
+        <div className="fixed bottom-4 left-0 right-0 flex justify-center z-50">
+          <BottomNav items={links} />
+        </div>
+        <MusicPlayer />
+      </div>
+    </StarsBackground>
+  );
 }

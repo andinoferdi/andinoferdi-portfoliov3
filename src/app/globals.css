@@ -1,913 +1,61 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
   :root {
-    --background: 222.2 84% 4.9%; /* Changed to dark by default */
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 94.1%;
-    --radius: 0.75rem;
-  }
-
-  .light {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --background: #0a0a0a;
+    --foreground: #ededed;
   }
 }
 
-/* PERFORMANCE OPTIMIZATION - Direct control overrides */
-/* CRITICAL: Force transparency for Magic UI grid visibility */
-html,
-body,
-#__next,
-main,
-div:not([class*="bg-gradient"]):not([class*="bg-primary"]):not([class*="bg-blue"]):not([class*="bg-red"]):not(
-    [class*="bg-green"]
-  ):not([class*="bg-yellow"]):not([class*="bg-purple"]):not([class*="bg-pink"]):not([class*="bg-indigo"]):not(
-    [class*="bg-cyan"]
-  ):not([class*="bg-orange"]),
-section:not([class*="bg-gradient"]):not([class*="bg-primary"]):not([class*="bg-blue"]),
-article,
-aside,
-header,
-footer,
-nav {
-  background: transparent !important;
-  background-color: transparent !important;
-}
-
-/* CRITICAL: Override ALL possible background classes for transparency */
-.bg-card,
-.bg-card\/30,
-.bg-card\/50,
-.bg-card\/95,
-.bg-muted,
-.bg-muted\/30,
-.bg-muted\/50,
-.bg-background,
-.bg-secondary {
-  background: rgba(0, 0, 0, 0.01) !important;
-  background-color: rgba(0, 0, 0, 0.01) !important;
-}
-
-/* CRITICAL: Remove ALL backdrop filters that block Magic UI */
-.backdrop-blur-xl:not(.navbar-scrolled):not(.mobile-menu-content),
-.backdrop-blur-lg:not(.navbar-scrolled):not(.mobile-menu-content),
-.backdrop-blur-md:not(.navbar-scrolled):not(.mobile-menu-content),
-.backdrop-blur-sm:not(.navbar-scrolled):not(.mobile-menu-content),
-.backdrop-blur:not(.navbar-scrolled):not(.mobile-menu-content),
-*[class*="backdrop-"]:not(.navbar-scrolled):not(.mobile-menu-content):not(.glass) {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-/* CRITICAL: Force transparency on specific sections */
-#Home,
-#About,
-#Portfolio,
-#Contact,
-.container:not(.navbar-container),
-main,
-div[class*="px-"]:not([class*="bg-gradient"]):not(.navbar-container) {
-  background: transparent !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-/* PERFORMANCE: Optimize scrollbar with direct values */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-  background-color: transparent;
-}
-
-@media (min-width: 768px) {
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-}
-
-::-webkit-scrollbar-track {
-  background: hsl(217.2 32.6% 17.5%);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid hsl(217.2 32.6% 17.5%);
-}
-
-::-webkit-scrollbar-thumb {
-  background: hsl(217.2 91.2% 59.8%);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border-radius: 20px;
-  border: 1px solid hsl(217.2 32.6% 17.5%);
-  transition: all 0.3s ease;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(217.2 91.2% 59.8% / 0.8);
-}
-
-/* NO CONFLICTS: Specific selectors for components that need backgrounds */
-.navbar-scrolled {
-  background: linear-gradient(135deg, hsl(var(--background) / 0.8), hsl(var(--background) / 0.6)) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-}
-
-.mobile-menu-content {
-  background: hsl(var(--background) / 0.95) !important;
-  backdrop-filter: blur(20px) !important;
-}
-
-.glass {
-  background: rgba(0, 0, 0, 0.2) !important;
-  backdrop-filter: blur(10px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-/* DIRECT CONTROL: Form elements with minimal background */
-input:not([type="submit"]):not([type="button"]):not([type="reset"]):not([class*="bg-gradient"]),
-textarea:not([class*="bg-gradient"]),
-select:not([class*="bg-gradient"]) {
-  background: hsl(var(--muted) / 0.3) !important;
-  background-color: hsl(var(--muted) / 0.3) !important;
-}
-
-/* DIRECT CONTROL: Buttons with minimal background (except gradient ones) */
-button:not(.bg-gradient-to-r):not([class*="bg-primary"]):not([class*="bg-blue"]):not([class*="bg-red"]):not(
-    [class*="bg-green"]
-  ):not([class*="bg-yellow"]):not([class*="bg-purple"]):not([class*="bg-pink"]):not([class*="bg-indigo"]):not(
-    [class*="bg-cyan"]
-  ):not([class*="bg-orange"]):not(.navbar-container button):not(.mobile-menu-btn) {
-  background: hsl(var(--muted) / 0.2) !important;
-  background-color: hsl(var(--muted) / 0.2) !important;
-}
-
-/* PERFORMANCE: Optimize animations with will-change */
-.interactive-background,
-.scrolling-background,
-[data-aos],
-.navbar-container,
-.nav-link,
-.mobile-nav-link {
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-/* NO CONFLICTS: Ensure Magic UI grid is always visible */
-.interactive-background {
-  pointer-events: none !important;
-  z-index: 0 !important;
-  background: transparent !important;
-}
-
-.interactive-background * {
-  pointer-events: none !important;
-  background: transparent !important;
-}
-
-/* DIRECT CONTROL: Content layer transparency */
-.content-layer {
-  pointer-events: auto;
-  position: relative;
-  z-index: 10;
-  background: transparent !important;
-}
-
-.content-layer * {
-  pointer-events: auto;
-}
-
-/* PERFORMANCE: Reduce paint operations */
-* {
-  box-sizing: border-box;
-}
-
-/* NO CONFLICTS: Override inline styles with highest specificity */
-[style*="background"]:not([class*="bg-gradient"]):not([class*="bg-primary"]):not([class*="bg-blue"]):not(
-    [class*="bg-red"]
-  ):not([class*="bg-green"]):not([class*="bg-yellow"]):not([class*="bg-purple"]):not([class*="bg-pink"]):not(
-    [class*="bg-indigo"]
-  ):not([class*="bg-cyan"]):not([class*="bg-orange"]) {
-  background: rgba(0, 0, 0, 0.01) !important;
-  background-color: rgba(0, 0, 0, 0.01) !important;
-}
-
-/* PERFORMANCE: Optimize touch interactions */
-@media (hover: none) and (pointer: coarse) {
-  .mobile-menu-btn:active {
-    transform: scale(0.95);
-    background: hsl(var(--muted) / 0.7) !important;
-  }
-
-  .mobile-nav-link:active {
-    background: hsl(var(--muted) / 0.7) !important;
-    transform: scale(0.98);
-  }
-
-  button:active,
-  a:active {
-    transform: scale(0.98);
-  }
-}
-
-/* DIRECT CONTROL: Safe area support for modern devices */
-@supports (padding: max(0px)) {
-  .safe-area-padding {
-    padding-left: max(1rem, env(safe-area-inset-left));
-    padding-right: max(1rem, env(safe-area-inset-right));
-  }
-}
-
-/* PERFORMANCE: Prevent zoom on input focus for iOS */
-@media screen and (max-width: 768px) {
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  input[type="number"],
-  input[type="tel"],
-  input[type="url"],
-  input[type="search"],
-  textarea,
-  select {
-    font-size: 16px !important;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply text-foreground;
-    font-family: var(--font-poppins), sans-serif;
-    cursor: auto;
-    /* Use CSS variable but force transparency for Magic UI */
-    background: transparent !important;
-    min-height: 100vh;
-    color: hsl(var(--foreground));
-  }
-
-  html {
-    /* Use CSS variable but force transparency for Magic UI */
-    background: transparent !important;
-    min-height: 100vh;
-    color-scheme: dark;
-  }
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Base Styles */
+html {
   scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: hsl(var(--primary)) hsl(var(--muted));
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-html,
 body {
-  overflow-x: hidden;
-  scroll-behavior: smooth !important;
-  font-family: var(--font-poppins), sans-serif;
-  /* Use CSS variables but ensure transparency for Magic UI */
-  background: transparent !important;
-  color: hsl(var(--foreground));
-  /* Support for safe areas on mobile devices */
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Poppins", Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+  overscroll-behavior-y: none;
 }
 
-/* Enhanced Custom Scrollbar Styles */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  background-color: transparent;
-}
-
-::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid hsl(var(--border));
-}
-
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--primary));
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border-radius: 20px;
-  border: 1px solid hsl(var(--border));
-  transition: all 0.3s ease;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--primary) / 0.8);
-}
-
-::-webkit-scrollbar-thumb:active {
-  background: hsl(var(--primary) / 0.9);
-}
-
-::-webkit-scrollbar-corner {
-  background: transparent;
-}
-
-/* Custom scrollbar for comment section */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
-  border-radius: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: hsl(var(--primary));
-  border-radius: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--primary) / 0.8);
-}
-
-/* Gradient text utilities */
-.gradient-text {
-  background: linear-gradient(135deg, hsl(var(--primary)), #0ea5e9, #06b6d4);
-  background-clip: text;
+/* Typography Utilities */
+.text-gradient {
+  background: linear-gradient(to right, #6190e6, #a7bfe8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-size: 200% 200%;
-  animation: gradient-shift 3s ease infinite;
+  background-clip: text;
 }
 
-@keyframes gradient-shift {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-/* Glass morphism */
-.glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.dark .glass {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Glow effects */
-.glow {
-  box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
-}
-
-.glow-strong {
-  box-shadow: 0 0 40px hsl(var(--primary) / 0.5);
-}
-
-/* Text selection */
-::selection {
-  background: hsl(var(--primary) / 0.3);
-  color: hsl(var(--foreground));
-}
-
-/* Focus styles */
-:focus-visible {
-  outline: 2px solid hsl(var(--primary));
-  outline-offset: 2px;
-}
-
-/* Theme transition handling - More specific approach */
-html {
-  color-scheme: dark;
-}
-
-html.light {
-  color-scheme: light;
-}
-
-/* Only disable transitions for theme-related color properties */
-html.theme-transition-disable *,
-html.theme-transition-disable *::before,
-html.theme-transition-disable *::after {
-  transition-property: none !important;
-  transition-duration: 0s !important;
-}
-
-/* Allow essential animations and transitions */
-[data-aos],
-[data-aos] *,
-.navbar-container,
-.navbar-container *,
-.nav-link,
-.nav-indicator,
-.nav-hover-bg,
-.mobile-menu,
-.mobile-nav-link,
-.logo-hover,
-.animate-float,
-.animate-spin-slower,
-.animate-pulse-slow,
-.animate-blink,
-.transition-all,
-.transition-colors,
-.transition-transform,
-.group:hover *,
-.group-hover * {
-  transition-property: transform, opacity, filter, background-color, border-color, color, fill, stroke !important;
-}
-
-/* Enhanced pointer events handling for background effects */
-.interactive-background {
-  pointer-events: none !important;
-  z-index: 0 !important;
-}
-
-.interactive-background * {
-  pointer-events: none !important;
-}
-
-/* Ensure content elements allow pointer events */
-.content-layer {
-  pointer-events: auto;
-  position: relative;
-  z-index: 10;
-  background: transparent; /* Ensure content doesn't block background */
-}
-
-.content-layer * {
-  pointer-events: auto;
-}
-
-/* Scrolling background effects */
-.scrolling-background {
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-/* Navbar Styles - Smooth transitions without flickering */
-.navbar-container {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, backdrop-filter 0.3s ease,
-    border-color 0.3s ease !important;
-  will-change: transform, background-color;
-}
-
-.navbar-transparent {
-  background: transparent;
-  border-bottom: 1px solid transparent;
-}
-
-.navbar-scrolled {
-  background: linear-gradient(135deg, hsl(var(--background) / 0.8), hsl(var(--background) / 0.6));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid hsl(var(--border) / 0.3);
-  box-shadow: 0 4px 6px -1px hsl(var(--foreground) / 0.1), 0 0 20px hsl(var(--primary) / 0.05);
-}
-
-.navbar-visible {
-  transform: translateY(0);
-}
-
-.navbar-hidden {
-  transform: translateY(-100%);
-}
-
-.navbar-open {
-  background: hsl(var(--background));
-  border-bottom: 1px solid hsl(var(--border));
-}
-
-/* Navigation Link Styles */
-.nav-link {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-.nav-text {
-  transition: color 0.3s ease !important;
-}
-
-.nav-text-active {
-  color: hsl(var(--primary));
-  font-weight: 600;
-}
-
-.nav-text-inactive {
-  color: hsl(var(--muted-foreground));
-}
-
-.nav-text-inactive:hover {
-  color: hsl(var(--foreground));
-}
-
-.nav-indicator {
-  transform-origin: left;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-.nav-indicator-active {
-  transform: scaleX(1);
-}
-
-.nav-indicator-inactive {
-  transform: scaleX(0);
-}
-
-.nav-link:hover .nav-indicator-inactive {
-  transform: scaleX(1);
-}
-
-.nav-hover-bg {
-  transform: scale(0);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-.nav-link:hover .nav-hover-bg {
-  transform: scale(1);
-}
-
-/* Logo hover effect */
-.logo-hover {
-  transition: transform 0.2s ease !important;
-}
-
-.logo-hover:hover {
-  transform: translateY(-2px);
-}
-
-/* Mobile Menu Styles */
-.mobile-menu {
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-.mobile-menu-open {
-  max-height: 100vh;
-  opacity: 1;
-}
-
-.mobile-menu-closed {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-}
-
-.mobile-menu-content {
-  background: hsl(var(--background) / 0.95);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid hsl(var(--border));
-}
-
-.mobile-nav-link {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  border-radius: 0.5rem;
-  animation: slideInFromRight 0.5s ease-out forwards;
-  opacity: 0;
-  transform: translateX(50px);
-}
-
-.mobile-nav-link-active {
-  color: hsl(var(--primary));
-  font-weight: 600;
-  background: hsl(var(--primary) / 0.1);
-}
-
-.mobile-nav-link-inactive {
-  color: hsl(var(--muted-foreground));
-}
-
-.mobile-nav-link-inactive:hover {
-  color: hsl(var(--foreground));
-  background: hsl(var(--muted) / 0.5);
-}
-
-.mobile-menu-btn {
-  position: relative;
-  padding: 0.5rem;
-  color: hsl(var(--muted-foreground));
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  border-radius: 0.5rem;
-}
-
-.mobile-menu-btn:hover {
-  color: hsl(var(--foreground));
-  background: hsl(var(--muted) / 0.5);
-  transform: rotate(90deg) scale(1.1);
-}
-
-/* AOS Custom Styles - Enhanced */
-[data-aos] {
-  pointer-events: none;
-  transition-property: transform, opacity !important;
-}
-
-[data-aos].aos-animate {
-  pointer-events: auto;
-}
-
-/* Enhanced AOS animations */
-[data-aos="fade-up"] {
-  transform: translate3d(0, 40px, 0);
-  opacity: 0;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-[data-aos="fade-up"].aos-animate {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-}
-
-[data-aos="fade-down"] {
-  transform: translate3d(0, -40px, 0);
-  opacity: 0;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-[data-aos="fade-down"].aos-animate {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-}
-
-[data-aos="fade-left"] {
-  transform: translate3d(-40px, 0, 0);
-  opacity: 0;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-[data-aos="fade-left"].aos-animate {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-}
-
-[data-aos="fade-right"] {
-  transform: translate3d(40px, 0, 0);
-  opacity: 0;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-[data-aos="fade-right"].aos-animate {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-}
-
-[data-aos="zoom-in"] {
-  transform: scale3d(0.6, 0.6, 0.6);
-  opacity: 0;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-[data-aos="zoom-in"].aos-animate {
-  transform: scale3d(1, 1, 1);
-  opacity: 1;
-}
-
-[data-aos="zoom-out"] {
-  transform: scale3d(1.2, 1.2, 1.2);
-  opacity: 0;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-[data-aos="zoom-out"].aos-animate {
-  transform: scale3d(1, 1, 1);
-  opacity: 1;
-}
-
-[data-aos="flip-left"] {
-  transform: perspective(2500px) rotateY(-100deg);
-  opacity: 0;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-[data-aos="flip-left"].aos-animate {
-  transform: perspective(2500px) rotateY(0deg);
-  opacity: 1;
-}
-
-[data-aos="flip-right"] {
-  transform: perspective(2500px) rotateY(100deg);
-  opacity: 0;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-[data-aos="flip-right"].aos-animate {
-  transform: perspective(2500px) rotateY(0deg);
-  opacity: 1;
-}
-
-/* Loading animations */
-@keyframes pulse-ring {
-  0% {
-    transform: scale(0.33);
-  }
-  40%,
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.2);
-  }
-}
-
-@keyframes pulse-dot {
-  0% {
-    transform: scale(0.8);
-  }
-  50% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(0.8);
-  }
-}
-
-@keyframes slideInFromRight {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Additional animations for the custom hero component */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes spin-slower {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes pulse-slow {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-@keyframes blink {
-  0%,
-  50% {
-    opacity: 1;
-  }
-  51%,
-  100% {
-    opacity: 0;
-  }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-spin-slower {
-  animation: spin-slower 8s linear infinite;
-}
-
-.animate-pulse-slow {
-  animation: pulse-slow 3s infinite;
-}
-
-.animate-blink {
-  animation: blink 1s infinite;
-}
-
-.pulse-ring {
-  animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-}
-
-.pulse-dot {
-  animation: pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.4s infinite;
-}
-
-/* Enhanced loading screen */
-.loading-container {
-  background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--muted) / 0.3));
-}
-
-.loading-progress {
-  background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--primary) / 0.7));
-  box-shadow: 0 0 20px hsl(var(--primary) / 0.5);
-}
-
-/* Ensure cursor remains visible */
-* {
-  cursor: auto !important;
-}
-
-button,
-a,
-[role="button"] {
-  cursor: pointer !important;
-}
-
+/* Responsive Form Inputs */
 input,
 textarea,
-select {
-  cursor: text !important;
-}
-
-/* Interactive hover effects */
-.interactive-hover {
-  transition: transform 0.2s ease !important;
-}
-
-.interactive-hover:hover {
-  transform: translateY(-2px);
-}
-
-/* Performance optimizations */
-.navbar-container,
-[data-aos],
-.nav-link,
-.mobile-nav-link {
-  will-change: transform, opacity;
-}
-
-/* Reduce motion for users who prefer it */
-@media (prefers-reduced-motion: reduce) {
-  [data-aos] {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-
-  .navbar-container {
-    transition-duration: 0.01ms !important;
-  }
-
-  .animate-float,
-  .animate-spin-slower,
-  .animate-pulse-slow,
-  .animate-blink {
-    animation: none !important;
-  }
-
-  /* Disable scrolling background effects for reduced motion */
-  .scrolling-background {
-    transform: none !important;
-    opacity: 1 !important;
-  }
+select,
+button {
+  font-family: "Poppins", Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  transition: all 0.3s ease;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -921,4 +69,41 @@ html,
 body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+/* Responsive Typography */
+@media (max-width: 640px) {
+  body {
+    font-size: 0.875rem;
+  }
+}
+
+/* Spacing Rhythm */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+dl,
+blockquote,
+pre,
+figure,
+table,
+.section {
+  margin-bottom: 1.5rem;
+}
+
+/* Accessibility Improvements */
+a {
+  transition: color 0.3s ease;
+}
+
+a:focus,
+button:focus {
+  outline: 2px solid #6190e6;
+  outline-offset: 2px;
 }

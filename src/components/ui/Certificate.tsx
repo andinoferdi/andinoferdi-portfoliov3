@@ -1,26 +1,30 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import Image from "next/image"
-import { X, Maximize2 } from "lucide-react"
+import type React from "react";
+import { useState } from "react";
+import Image from "next/image";
+import { X, Maximize2 } from "lucide-react";
 
 interface CertificateProps {
-  image: string
-  title: string
-  issuer: string
+  image: string;
+  title: string;
+  issuer: string;
 }
 
 const Certificate: React.FC<CertificateProps> = ({ image, title, issuer }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleOpen = () => setIsModalOpen(true)
-  const handleClose = () => setIsModalOpen(false)
+  const handleOpen = () => setIsModalOpen(true);
+  const handleClose = () => setIsModalOpen(false);
 
   return (
     <>
       {/* Certificate Thumbnail */}
-      <div className="relative group cursor-pointer" onClick={handleOpen} style={{ background: "transparent" }}>
+      <div
+        className="relative group cursor-pointer"
+        onClick={handleOpen}
+        style={{ background: "transparent" }}
+      >
         <div
           className="relative overflow-hidden rounded-2xl border border-border transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-primary/50"
           style={{
@@ -29,7 +33,10 @@ const Certificate: React.FC<CertificateProps> = ({ image, title, issuer }) => {
             WebkitBackdropFilter: "none",
           }}
         >
-          <div className="aspect-[4/3] relative" style={{ background: "transparent" }}>
+          <div
+            className="aspect-[4/3] relative"
+            style={{ background: "transparent" }}
+          >
             <Image
               src={image || "/placeholder.svg"}
               alt={title}
@@ -55,7 +62,9 @@ const Certificate: React.FC<CertificateProps> = ({ image, title, issuer }) => {
 
           {/* Certificate Info */}
           <div className="p-4" style={{ background: "transparent" }}>
-            <h3 className="font-semibold text-foreground text-sm mb-1 line-clamp-2">{title}</h3>
+            <h3 className="font-semibold text-foreground text-sm mb-1 line-clamp-2">
+              {title}
+            </h3>
             <p className="text-muted-foreground text-xs">{issuer}</p>
           </div>
         </div>
@@ -96,14 +105,16 @@ const Certificate: React.FC<CertificateProps> = ({ image, title, issuer }) => {
 
             {/* Certificate Info */}
             <div className="mt-4 text-center">
-              <h3 className="text-xl font-semibold text-foreground mb-2">{title}</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-2">
+                {title}
+              </h3>
               <p className="text-muted-foreground">Issued by {issuer}</p>
             </div>
           </div>
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default Certificate
+export default Certificate;
