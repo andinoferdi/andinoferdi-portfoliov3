@@ -101,7 +101,7 @@ const MusicPlayer: React.FC = () => {
       <div
         style={{
           position: "fixed",
-          top: "20px",
+          top: "110px",
           right: "20px",
           width: "260px",
           height: "50px",
@@ -125,7 +125,7 @@ const MusicPlayer: React.FC = () => {
   // Styles
   const containerStyle: React.CSSProperties = {
     position: "fixed",
-    top: "20px",
+    top: "110px",
     right: "20px",
     width: isExpanded ? "280px" : "260px",
     height: isExpanded ? "440px" : "50px",

@@ -1,9 +1,10 @@
 import { StarsBackground } from "@/components/background/stars";
+import { NavbarDemo } from "@/components/navbar-demo";
 import HeroSection from "@/sections/hero/index";
 import AboutSection from "@/sections/about/index";
 import Portfolio from "@/sections/portfolio/index";
 import { BottomNav } from "@/components/ui/bottomnav";
-import MusicPlayer from "@/components/MusicPlayer/music-player";
+import MusicPlayer from "@/components/music-player";
 import {
   IconBrandGithub,
   IconBrandX,
@@ -54,6 +55,7 @@ export default function Home() {
   return (
     <StarsBackground>
       <div className="bg-transparent relative">
+        <NavbarDemo />
         <HeroSection />
         <AboutSection />
         <Portfolio />
